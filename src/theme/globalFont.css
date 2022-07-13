@@ -1,0 +1,49 @@
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 700;
+  font-display: block;
+  src: local('Spoqa Han Sans Neo Bold'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoBold.woff2') format('woff2'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoBold.woff') format('woff'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 500;
+  font-display: block;
+  src: local('Spoqa Han Sans Neo Medium'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoMedium.woff2') format('woff2'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoMedium.woff') format('woff'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoMedium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 400;
+  font-display: block;
+  src: local('Spoqa Han Sans Neo Regular'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoRegular.woff2') format('woff2'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoRegular.woff') format('woff'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoRegular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 300;
+  font-display: block;
+  src: local('Spoqa Han Sans Neo Light'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoLight.woff2') format('woff2'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoLight.woff') format('woff'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoLight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 100;
+  font-display: block;
+  src: local('Spoqa Han Sans Neo Thin'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoThin.woff2') format('woff2'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoThin.woff') format('woff'),
+    url('https://static.tadatada.com/resources/fonts/SpoqaHanSansNeo/SpoqaHanSansNeoThin.ttf') format('truetype');
+}

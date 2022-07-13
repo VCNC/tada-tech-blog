@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "incremental": false,
+    "composite": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "paths": {
+      "~components/*": ["src/components/*"],
+      "~pages/*": ["src/pages/*"],
+      "~images/*": ["src/images/*"],
+      "~constants/*": ["src/constants/*"],
+      "~designSystem/*": ["src/designSystem/*"],
+      "~lib/*": ["src/lib/*"],
+      "~theme/*": ["src/theme/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}
