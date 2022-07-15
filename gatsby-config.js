@@ -186,5 +186,12 @@ module.exports = {
         shortname: `vcncengineeringblog`,
       },
     },
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: '323261037',
+        head: true,
+      },
+    },
   ],
 }
