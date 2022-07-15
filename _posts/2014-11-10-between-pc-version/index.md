@@ -188,7 +188,7 @@ Webpack은 자바스크립트뿐만 아니라 CSS나 이미지, JSON 파일 등�
 - 자바스크립트 코드의 복잡도를 줄이기 위해 [React], [CommonJS], [ECMAScript 6] 등의
   기술을 활용하였습니다.
 
-[^1]: VCNC Engineering Blog, [비트윈 시스템 아키텍처](http://engineering.vcnc.co.kr/2013/04/between-system-architecture/), 2013년 4월
+[^1]: VCNC Engineering Blog, [비트윈 시스템 아키텍처](/2013-04-18-between-system-architecture), 2013년 4월
 [^2]: Wikipedia, [Chromium Embedded Framework - Applications using CEF](http://en.wikipedia.org/wiki/Chromium_Embedded_Framework#Applications_using_CEF)
 
 [비트윈 pc 버전]: http://between.us/pc/

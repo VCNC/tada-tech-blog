@@ -155,7 +155,7 @@ Kharon 덕분에 비트윈 내 다양한 시스템에서 별다른 추가 개발
 프레젠터를 만드는 과정에서 여러 기술적 문제가 있었습니다. 이를 해결하기 위해 C++로 연결 유지 모듈을 따로 작성하였고 Multiplexing Protocol을 따로 정의하였으며 그 외 여러 가지 기술적인 결정들을 하였습니다.
 이런 과정에서 **시행착오들이 있었지만 이를 발판 삼아 더 좋은 기술적 결정을 내리기 위해 고민하여 결국 기존 시스템에 쉽게 적용할 수 있고 쉽게 동작하는 프레젠터를 만들어 이용**하고 있습니다.
 
-[비트윈의 시스템 아키텍처]: http://engineering.vcnc.co.kr/2013/04/between-system-architecture/
+[비트윈의 시스템 아키텍처]: /2013-04-18-between-system-architecture
 [멀티티어 아키텍처]: https://en.wikipedia.org/wiki/Multitier_architecture
 [elb]: https://aws.amazon.com/elasticloadbalancing/
 [consistent hash]: https://en.wikipedia.org/wiki/Consistent_hashing
