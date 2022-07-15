@@ -131,7 +131,7 @@ JIRA를 통한 이슈 관리 및 스프린트, Pull request를 이용한 상호�
 
 네 그렇습니다. 결론은 저희와 함께 고민하면서 더 좋은 개발문화를 만들어나갈 개발자를 구하고 있다는 것입니다.
 
-[helloworldengineeringblog]: http://engineering.vcnc.co.kr/2013/04/hello-world/
+[helloworldengineeringblog]: /2013-04-15-hello-world
 [wordpress]: http://wordpress.org/
 [github]: https://github.com
 [tumblr]: https://www.tumblr.com/

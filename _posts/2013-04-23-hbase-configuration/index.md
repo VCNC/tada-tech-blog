@@ -39,7 +39,7 @@ authors:
 
 [커플 필수 앱 비트윈][비트윈]은 여러 종류의 오픈 소스를 기반으로 이루어져 있습니다.
 그 중 하나는 [HBase]라는 NoSQL 데이터베이스입니다.
-[VCNC]에서는 HBase를 비트윈 서비스의 메인 데이터베이스로써 사용하고 있으며, 또한 데이터 분석을 위한 DW 서버로도 사용하고 있습니다.
+VCNC에서는 HBase를 비트윈 서비스의 메인 데이터베이스로써 사용하고 있으며, 또한 데이터 분석을 위한 DW 서버로도 사용하고 있습니다.
 
 그동안 두 개의 HBase Cluster 모두 최적화를 위해서 여러 가지 설정을 테스트했고 노하우를 공유해 보고자 합니다.
 아랫은 저희가 HBase를 실제로 저희 서비스에 적용하여 운영하면서 최적화한 시스템 구성과 설정들을 정리한 것입니다.
@@ -205,7 +205,6 @@ HA cluster를 구성하는 과정도 후에 포스팅 하도록 하겠습니다.
 [hbase]: http://hbase.apache.org/
 [bigtable]: http://research.google.com/archive/bigtable.html
 [cloudera]: http://www.cloudera.com/content/cloudera/en/home.html
-[vcnc]: http://between.us/team/
 [oltp]: http://en.wikipedia.org/wiki/Online_transaction_processing
 [olap]: http://en.wikipedia.org/wiki/Online_analytical_processing
 [nhn line]: http://tech.naver.jp/blog/?p=1420
