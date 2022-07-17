@@ -54,11 +54,11 @@ authors:
 <script async class="speakerdeck-embed" data-id="2b8092b02ff90131ef414aa7d272d735" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
 
 [비트윈]: http://between.us/
-[analyzinguserdata]: http://engineering.vcnc.co.kr/2013/05/analyzing-user-data/
+[analyzinguserdata]: /2013-05-14-analyzing-user-data
 [michael stack]: https://www.linkedin.com/pub/michael-stack/1/587/110
 [zdnet]: http://www.zdnet.co.kr/
 [haeinsa]: https://github.com/vcnc/haeinsa
 [hbaseinline]: http://tech.naver.jp/blog/?p=1420
 [hbaseinfacebookmessenger]: http://www.slideshare.net/brizzzdotcom/facebook-messages-hbase
-[hbaseoptimization]: http://engineering.vcnc.co.kr/2013/04/hbase-configuration/
+[hbaseoptimization]: /2013-04-23-hbase-configuration
 [haeinsaindeview]: https://speakerdeck.com/vcnc/haeinsa-hbase-transaction-library

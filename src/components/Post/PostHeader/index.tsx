@@ -21,9 +21,11 @@ export const PostHeader = ({ title, date, authors }: Partial<GatsbyTypes.PostHea
           <PostAuthorWrapper>
             {authors?.map((author, idx) => {
               return (
-                <a key={String(idx)} href={author?.link} title={`${author?.name} Link`} target="_blank">
-                  <PostAuthor>{author?.name}</PostAuthor>
-                </a>
+                <PostAuthor key={String(idx)}>
+                  <a href={author?.link} title={`${author?.name} Link`} target="_blank">
+                    {author?.name}
+                  </a>
+                </PostAuthor>
               )
             })}
           </PostAuthorWrapper>

@@ -77,7 +77,7 @@ export const PostAuthorWrapper = styled.div`
 export const PostAuthor = styled.p`
   ${Typefaces.Small1Bold};
   color: ${Color.Blue400};
-  border-bottom: 1px solid ${Color.Blue400};
+  text-decoration: underline;
 
   &:hover {
     color: ${Color.Blue200};

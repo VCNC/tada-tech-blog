@@ -22,7 +22,7 @@ authors:
 ---
 
 요즘은 데이터 분석이 스타트업, 대기업 가릴 것 없이 유행입니다. VCNC도 비트윈 출시 때부터 지금까지 [데이터 분석을 해오고 있고],
-[데이터 기반의 의사결정을 내리고] 있습니다.
+데이터 기반의 의사결정을 내리고 있습니다.
 
 데이터 분석을 하는데 처음부터 복잡한 기술이 필요한 것은 아닙니다. Flurry, Google Analytics 등의 훌륭한 무료 툴들이 있습니다.
 하지만 이러한 범용 툴에서 제공하는 것 이상의 특수하고 자세한 분석을 하고 싶을 때 직접 많은 데이터를 다루는 빅데이터 분석을 하게 됩니다.
@@ -167,8 +167,7 @@ Apache Spark를 엔진으로 사용하도록 바뀐 이후에 활용성이 대�
 [apache zeppelin]: http://zeppelin.incubator.apache.org
 [mapreduce slideshare]: http://www.slideshare.net/esaliya/mapreduce-in-simple-terms
 [rdd 논문]: https://www.cs.princeton.edu/courses/archive/spring13/cos598C/spark.pdf
-[데이터 분석을 해오고 있고]: http://engineering.vcnc.co.kr/2013/05/analyzing-user-data/
-[데이터 기반의 의사결정을 내리고]: http://blog.vcnc.co.kr/134
+[데이터 분석을 해오고 있고]: /2013-05-14-analyzing-user-data
 [mapreduce]: ./map-reduce-drink.png
 [architecture1]: ./data-analysis-system-old.png
 [architecture2]: ./data-analysis-system-new.png
