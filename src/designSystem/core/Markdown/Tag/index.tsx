@@ -118,7 +118,7 @@ const md_hr = css`
 `
 
 const md_img = css`
-  margin: 10px auto 30px;
+  margin: 20px auto;
   display: block;
   max-width: 100%;
 `
@@ -134,7 +134,7 @@ const md_figcaption = css`
 `
 
 const md_iframe = css`
-  margin: 10px auto 20px;
+  margin: 20px auto;
   display: block;
   max-width: 100%;
 `
