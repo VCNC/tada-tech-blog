@@ -76,6 +76,7 @@ const md_li = css`
   & > ol,
   ul {
     margin-left: 20px;
+    padding-top: 0;
   }
 `
 
