@@ -9,7 +9,7 @@ const md_h1 = css`
 `
 
 const md_h2 = css`
-  margin: 40px 0px 10px;
+  margin: 30px 0px 10px;
   font-size: 24px;
   font-weight: 500;
   line-height: 33.6px;
@@ -17,9 +17,9 @@ const md_h2 = css`
 
 const md_h3 = css`
   margin: 20px 0px 10px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 28px;
+  line-height: 25.2px;
 `
 
 const md_h4 = css`
@@ -76,6 +76,7 @@ const md_li = css`
   & > ol,
   ul {
     margin-left: 20px;
+    padding-top: 0;
   }
 `
 
@@ -118,7 +119,7 @@ const md_hr = css`
 `
 
 const md_img = css`
-  margin: 10px auto 30px;
+  margin: 20px auto;
   display: block;
   max-width: 100%;
 `
@@ -134,7 +135,7 @@ const md_figcaption = css`
 `
 
 const md_iframe = css`
-  margin: 10px auto 20px;
+  margin: 20px auto;
   display: block;
   max-width: 100%;
 `

@@ -3,7 +3,7 @@ import { Color } from '~designSystem/foundation'
 import { Typefaces } from '~designSystem/foundation/Typeface'
 
 export const TagWrapper = styled.div`
-  margin-top: 30px;
+  margin-top: 16px;
   width: 300px;
   text-align: center;
 `

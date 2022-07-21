@@ -39,7 +39,7 @@ export const Header = () => {
             title={EXTERNAL_URL.TADA_SPEAKER_DECK.title()}
             target="_blank"
           >
-            <NavText navTextWidth={126}>PRESENTATION</NavText>
+            <NavText navTextWidth={110}>PRESENTATION</NavText>
           </a>
           <a href={EXTERNAL_URL.TADA_RECRUIT.link()} title={EXTERNAL_URL.TADA_RECRUIT.title()} target="_blank">
             <NavText navTextWidth={30}>JOB</NavText>
