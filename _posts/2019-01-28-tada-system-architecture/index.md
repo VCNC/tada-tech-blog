@@ -179,9 +179,9 @@ Dispatcher가 배차 요청을 받으면 다음과 같은 로직을 수행합니
 [kinesis]: https://aws.amazon.com/ko/kinesis/
 [firehose]: https://aws.amazon.com/ko/kinesis/data-firehose/
 [cloudwatch]: https://aws.amazon.com/ko/cloudwatch/
-[haeinsa]: http://engineering.vcnc.co.kr/2013/10/announcing-haeinsa/
-[hbaseonvcnc]: http://engineering.vcnc.co.kr/2014/05/hbase-schema-in-between/
-[alfred]: http://engineering.vcnc.co.kr/2015/11/presenter-multitier-architecture/
+[haeinsa]: /2013-10-10-announcing-haeinsa
+[hbaseonvcnc]: /2014-05-07-hbase-schema-in-between
+[alfred]: /2015-11-30-presenter-multitier-architecture
 [hcl]: https://github.com/hashicorp/hcl
 [kops]: https://github.com/kubernetes/kops
 [helm]: https://helm.sh/

@@ -127,8 +127,8 @@ GAE에는 클라이언트에서 보내주는 해상도를 보고 적당한 해�
 
 네 그렇습니다. 결론은 Python 개발자를 모신다는 것입니다.
 
-[비트윈 서버]: http://engineering.vcnc.co.kr/2013/04/between-system-architecture/
-[통계 서버]: http://engineering.vcnc.co.kr/2013/05/analyzing-user-data/
+[비트윈 서버]: /2013-04-18-between-system-architecture
+[통계 서버]: /2013-05-14-analyzing-user-data
 [python]: http://www.python.org/
 [flask]: http://flask.pocoo.org/
 [sqlalchemy]: http://www.sqlalchemy.org/

@@ -186,7 +186,7 @@ Tokyo Region에서 멀리 떨어져 있는 사용자를 위해서 전 세계 여
 [lru]: https://en.wikipedia.org/wiki/Cache_algorithms#LRU
 [skia]: https://skia.org/
 [imagemagick]: http://www.imagemagick.org/script/index.php
-[비트윈 스티커 시스템]: http://engineering.vcnc.co.kr/2013/06/architecture-of-sticker-system/
+[비트윈 스티커 시스템]: /2013-06-24-architecture-of-sticker-system
 [webp]: https://developers.google.com/speed/webp/#how_webp_works_stylefont-weight_bold
 [spot instance]: https://aws.amazon.com/ko/ec2/spot/
 [sqs]: https://aws.amazon.com/ko/sqs/

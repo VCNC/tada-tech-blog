@@ -44,7 +44,7 @@ authors:
 
 비트윈 데이터팀은 Spark이 지금만큼 유명해지기 전인 2013년부터 [Spark을 잘 활용하고 있어][vcnc spark post] 많은 노하우를 가지고 있는데, 운이 좋게도 [이번 Spark Summit EU][spark summit eu 2017]에서 스타트업에서의 use case에 대해 발표할 기회가 생겨 유럽에 다녀오게 되었습니다.
 
-잠깐 회사 자랑을 하자면, 비트윈을 만드는 [VCNC 개발팀][vcnc jobs]은 기술적인 리더십과 완성도를 추구하기 위해 모든 팀원이 각자 맡은 분야에 끊임없이 노력하고 있고, 회사에서도 이에 지원을 아끼지 않습니다.
+잠깐 회사 자랑을 하자면, 비트윈을 만드는 VCNC 개발팀은 기술적인 리더십과 완성도를 추구하기 위해 모든 팀원이 각자 맡은 분야에 끊임없이 노력하고 있고, 회사에서도 이에 지원을 아끼지 않습니다.
 
 이러한 활동 중 하나로 저희는 팀원들의 국내외 컨퍼런스 참석을 적극 권장하고 있습니다. 국내 컨퍼런스는 누구의 눈치도 볼 필요 없이 자유롭게 참석할 수 있고, 매년 쿼터를 정해서 적임자라고 생각하는 사람을 선정하여 여러 해외 컨퍼런스에 참석을 하고 있습니다. 또한, 앞으로 여건이 허락하는 대로 이런 기회를 늘려나갈 계획입니다.
 
@@ -151,5 +151,4 @@ Summit 둘째 날에는 **스타트업에서의 Spark 활용에 대한 케이스
 [pub 1]: ./pub1.jpg
 [pub 2]: ./pub2.jpg
 [vcnc spark post]: /2015-05-18-data-analysis-with-spark/
-[vcnc jobs]: https://between.us/jobs
 [datayanolja]: https://speakerdeck.com/swkimme/biteuwin-deiteotimyi-haru

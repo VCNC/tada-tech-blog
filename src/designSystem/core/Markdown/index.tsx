@@ -80,7 +80,7 @@ export const Markdown = styled.article`
   }
 
   & .gatsby-resp-image-wrapper {
-    margin: 10px 0 20px;
+    margin: 20px 0;
     max-width: 100%;
   }
 
@@ -91,13 +91,13 @@ export const Markdown = styled.article`
   }
 
   & .google-presentation {
-    margin: 30px 0;
+    margin: 20px 0;
     position: relative;
     width: 100%;
     padding-bottom: 62.5%;
 
     & > iframe {
-      margin: 10px 0 20px;
+      margin: 20px 0;
       position: absolute;
       width: 100%;
       height: 100%;

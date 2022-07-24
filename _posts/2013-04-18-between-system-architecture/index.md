@@ -39,7 +39,7 @@ authors:
     link: http://eincs.com
 ---
 
-[VCNC]는 커플을 위한 모바일 앱 [비트윈][between]을 서비스하고 있습니다.
+VCNC는 커플을 위한 모바일 앱 [비트윈][between]을 서비스하고 있습니다.
 비트윈은 사진, 메모, 채팅, 기념일 등 다양한 기능을 제공하며, 오픈 베타 테스트를 시작한 2011년 11월부터 현재까지 연인 간의 소통을 돕고 있습니다.
 그동안 비트윈 시스템 아키텍처에는 많은 변화가 있었으며 다양한 결정을 하였습니다.
 비트윈 아키텍처를 발전시키면서 배우게 된 여러 가지 노하우를 정리하여 공유해보고자 합니다.
@@ -168,7 +168,6 @@ authors:
 
 <script async class="speakerdeck-embed" data-id="e4af60d05bb6013025f71231381b23b3" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
 
-[vcnc]: http://between.us/team/
 [between]: http://between.us/
 [netty]: http://netty.io/
 [thrift]: http://thrift.apache.org/
