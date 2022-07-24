@@ -8,10 +8,12 @@ thumbnail:
   - color: ./thumbnail-color.png
     gray: ./thumbnail-gray.png
 description: 타다 기술 블로그를 개편하는 과정을 소개합니다. 앞으로도 꾸준히 블로그를 통해 타다가 마주하는 문제를 공유할 예정입니다. 올라올 글들과 타다에 많은 관심을 가져주시기 바랍니다.
-tags: ['VCNC', 'Engineering', 'Blog', 'Developer', 'Tech', 'Tada', '개발자', '블로그', '타다']
+tags: ['Tada', 'Tech', 'Blog', 'VCNC', 'Developer', '개발자', '블로그', '타다']
 
 authors:
   - name: 'Joon Park'
+    profileImage: './profile-image-joon.jpeg'
+    comment: 타다팀에서 웹 프론트엔드 개발을 담당하고 있습니다.
     link: https://www.linkedin.com/in/joonseong-park-0529b9245/
   - name: 'Nate Kim'
     link: https://www.linkedin.com/in/glwithu06
