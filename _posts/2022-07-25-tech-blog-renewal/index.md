@@ -86,17 +86,16 @@ TF 의 시작은 우리가 만들고 싶은 기술 블로그를 다시 정의하
 
 [Gatsby]는 React 기반의 정적 페이지 생성을 도와주는 프레임워크입니다. 타다팀이 기술 블로그를 운영하고자 하는 목적과 방식에 맞게 Gatsby를 선택하게 되었고, 이유는 다음과 같습니다.
 
-- 웹 프론트엔드 팀 기술 스택(`React`) 사용으로 편리한 유지보수
-- 다양한 [Plugin]을 제공
-- Gatsby Cloud를 통한 손쉬운 배포
+- 타다팀이 관리하기 쉬운 JavaScript 기반
+- 기획에 맞는 다양하고 효율적인 [Plugin] 제공
+- Gatsby Cloud를 통한 손쉬운 배포 (실제 배포 및 Preview 배포)
 
 <br/>
 
 Gatsby라는 새로운 기술 선택 이외에도 기존 내용의 마이그레이션을 위한 추가적인 고려사항이 있었습니다.
 
 1. **Markdown Style**
-   - 기술 블로그의 게시물은 기본적으로 마크다운 문법을 기준으로 작성합니다. Gatsby 플러그인, [gatsby-transformer-remark]을 통해, 마크다운 파일(`.md`)을 `html` 형태로 변환합니다. 브라우저마다 다른 기본 css 를 가지기 때문에, `reset.css` 로 브라우저 기본 스타일을 모두 초기화시켰습니다. 이러한 이유에서 글 내용이 표현되는 부분을 위한 스타일 지정이 필요했습니다. 이를 위해, 마크다운 문법을 정리하고, 각 문법이 변환되는 `html` 태그 형태를 나열했습니다. 변환된 각 태그를 디자이너와 함께 하나하나 정의하여 마크다운이 올바른 형태의 웹 게시물로 노출될 수 있게 작업하였습니다.
-   - 코드블럭 스타일을 위해 [gatsby-remark-prismjs] 플러그인을 적용하였습니다. 또한, [prismjs.com]에서 `prism.css` 기본틀을 내려받아 추가적인 커스터마이징을 통해 원하는 코드블럭 디자인 형태를 만들 수 있었습니다.
+   - 기술 블로그의 게시물은 기본적으로 마크다운 문법으로 작성합니다. 개편된 블로그에서도 기존의 맥락을 유지하고 나아가 가독성을 끌어올리는 목표가 있었습니다. 마크다운 기반으로 블로그 게시물을 작성하기에 있어서 Gatsby 플러그인은 우리의 목표를 달성하기에 충분한 기능을 제공하였습니다. 또한, 읽기 편한 블로그 게시물을 만들기 위해 디자이너와 함께 디자인 컴포넌트를 구성하여 현재의 게시물 UI를 만들었습니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="max-width: 249px; width: 50%;">
@@ -110,10 +109,8 @@ Gatsby라는 새로운 기술 선택 이외에도 기존 내용의 마이그레�
 
 2. **Post Comment**
 
-   - 블로그 게시물 댓글은 외부 다른 개발자와의 만남을 가능하게 해주는 창구입니다. 기존 블로그 형태에서는 [Disqus]를 통해, 소통을 원활하게 진행했습니다. 기술 블로그를 개편하는 과정에서 개발 관련 블로그인 만큼 Github Issue 기반의 [Utterances]를 통해 소통하자는 의견이 모였습니다. 하지만, 기존에 여러 개발자와의 소통을 보존하기 위해, 블로그 개편 이전 게시물에 대해서는 Disqus를 유지하고 이후의 게시물에 대해 Utterances를 적용하였습니다.
-   - Disqus 적용에 있어서, Gatsby 플러그인, [gatsby-plugin-disqus]을 사용하였고, 댓글이 url 바탕으로 연결되어 있어서 과거 기술블로그 주소를 통해 연결하였습니다.
-   - Utterances 는 Gatsby 플러그인이 따로 존재하지 않아, 직접 `https://utteranc.es/client.js`를 `<script/>` 에 삽입하는 방식을 통해 적용하였습니다.
-   - 하나의 블로그에 Disqus와 Utterances가 공존하는 부분에 대해, Disqus 댓글 내용을 Utterances로 마이그레이션하는 방법에 대해 고민중입니다.
+   - 블로그 게시물의 댓글은 타다팀과 외부 개발자를 연결해주는 채널입니다. 기존 블로그 형태에서는 [Disqus]를 통해, 소통을 원활하게 진행했습니다. 블로그를 개편하는 과정에서 댓글을 작성하기에 익숙하고 용이한 [Utterances] 사용을 결정하였습니다. 기존 게시물의 댓글을 보존하기 위해 블로그 개편 이전 게시물에 대해서는 Disqus를 유지하였고, 이후의 게시물에 대해 Utterances를 적용하였습니다.
+   - 궁극적으로는 Disqus 댓글을 Utterances로 합치는 목표가 있고, 관련하여 방법을 고민 중입니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="max-width: 249px; width: 50%;">
@@ -127,9 +124,7 @@ Gatsby라는 새로운 기술 선택 이외에도 기존 내용의 마이그레�
 
 3. **RSS**
 
-   - [RSS]는 블로그에서 주로 사용하는 콘텐츠 표현 방식으로, Jekyll로 작성된 기존 기술 블로그에 [Atom]의 형태로 존재하였고, 해당 기능을 Gatsby 환경에서 구현할 필요가 있었습니다. 개편한 블로그는 Gatsby를 바탕으로 구성하였으므로 Gatsby 플러그인, [gatsby-plugin-feed]을 사용하여 구현할 수 있었습니다.
-   - 특이사항으로 `RSS`는 `production build`에서만 작동하기 때문에 개발환경이 아닌 build를 통해 동작을 확인해야 합니다.
-   - 새로 개편된 기술 블로그의 RSS는 상단의 `RSS Icon` 또는 [여기]에서 확인할 수 있습니다.
+   - [RSS]는 블로그에서 주로 사용하는 콘텐츠 표현 방식입니다. Jekyll로 작성된 기존 기술 블로그의 RSS 기능을 Gatsby 환경에서 구현할 필요가 있었습니다. RSS 기능 역시, 잘 구성되어 있는 Gatsby 플러그인을 사용하여 손쉽게 구현할 수 있었습니다.
 
 ## 마치며
 
@@ -142,13 +137,6 @@ Gatsby라는 새로운 기술 선택 이외에도 기존 내용의 마이그레�
 [jekyll]: https://jekyllrb.com/
 [gatsby]: https://www.gatsbyjs.com/
 [plugin]: https://www.gatsbyjs.com/plugins
-[gatsby-transformer-remark]: https://www.gatsbyjs.com/plugins/gatsby-transformer-remark/?=tras
-[gatsby-remark-prismjs]: https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/?=gatsby-remark-prismjs
-[prismjs.com]: https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript
 [disqus]: https://disqus.com/
 [utterances]: https://utteranc.es/
-[gatsby-plugin-disqus]: https://www.gatsbyjs.com/plugins/gatsby-plugin-disqus/?=disqus
 [rss]: https://ko.wikipedia.org/wiki/RSS
-[gatsby-plugin-feed]: https://www.gatsbyjs.com/plugins/gatsby-plugin-feed/?=feed
-[atom]: https://en.wikipedia.org/wiki/Atom_(web_standard)
-[여기]: ./rss.xml
