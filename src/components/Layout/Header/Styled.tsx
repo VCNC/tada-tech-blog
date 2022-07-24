@@ -37,8 +37,12 @@ export const LogoText = styled.p`
   color: ${Color.Navy600};
   white-space: nowrap;
 
-  @media ${DEVICE_MEDIA.MOBILE_SMALL} {
+  @media ${DEVICE_MEDIA.MOBILE_LARGE} {
     margin-left: 10px;
+  }
+
+  @media ${DEVICE_MEDIA.MOBILE_SMALL} {
+    margin-left: 8px;
   }
 `
 
@@ -51,6 +55,14 @@ export const MiddleLine = styled.div`
 
   @media ${DEVICE_MEDIA.MOBILE} {
     margin-right: -15px;
+  }
+
+  @media ${DEVICE_MEDIA.MOBILE_LARGE} {
+    margin-left: 10px;
+  }
+
+  @media ${DEVICE_MEDIA.MOBILE_SMALL} {
+    margin-left: 8px;
   }
 `
 
