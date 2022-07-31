@@ -58,6 +58,7 @@ npm -v
 3. **`_posts` 폴더 내부에 게시글용 폴더를 생성**
 
    - `index.md` 에 [글 작성 양식]을 맞춰 글을 작성해주세요.
+   - [Typora]와 같은 마크다운 툴을 통해 글을 미리 확인하는 것도 좋습니다.
    - 게시물 업로드 날짜가 정확하지 않다면, 일단 예상되는 날짜로 입력한 후 게시 전에 수정해주세요.
 
 4. **Pull Request**
@@ -82,3 +83,4 @@ npm -v
 [글 작성 양식 보러가기]: https://github.com/VCNC/tada-tech-blog/tree/main/_posts#readme
 [글 작성 양식]: #글-작성-양식
 [대표 이미지 구글 드라이브]: https://drive.google.com/drive/u/1/folders/12bWBSvZ39IgqGOo4SgOqYE4Mi616GxoK
+[Typora]: https://typora.io/
