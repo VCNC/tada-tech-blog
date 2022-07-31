@@ -16,7 +16,17 @@ Gatsby는 React 기반의 프레임워크로 로컬에서 실행하기 위해, N
 
 ### Node 설치하기
 
-"설치방법"
+1. Homebrew 설치
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew update
+```
+2. node 설치 및 확인 (nvm 통해서 설치하셔도 됩니다.)
+```bash
+brew install node
+node -v
+npm -v
+```
 
 ### 실행하기
 
