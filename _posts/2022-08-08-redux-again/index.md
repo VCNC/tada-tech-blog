@@ -1,7 +1,7 @@
 ---
 layout: post
-date: 2022-07-07 10:00:00 +09:00
-permalink: /2022-07-07-redux-again
+date: 2022-08-08 10:00:00 +09:00
+permalink: /2022-08-08-redux-again
 
 title: 'Redux, Again'
 thumbnail:
