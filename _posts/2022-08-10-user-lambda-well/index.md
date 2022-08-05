@@ -53,9 +53,14 @@ authors:
 
 &nbsp;처음 pdf 파일 분리하는 코드는 간단했습니다.  [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제코드와 다를게 없이 Lambda Console Editor를 이용해 S3에 PDF가 특정 PostFix로 업로드 되면 해당 파일을 읽고 추가한 PDF Lib Layer를 Import해 PDF를 순서에 맞게 분할을해서 다시 S3에 업로드 하면 되었습니다.
 
+<br/>
+
+&nbsp;아래와 같이 파일 분리 시 splitStart 부터 splitStart 까지의 페이지를 분할 하고 writePageName 이름으로 저장하는 Function을 만들었습니다.
+<br/>
+
 ```python
 
-def split_upload_file(pageName, splitStart, splitEnd):
+def split_upload_file(writePageName, splitStart, splitStart):
     pdf = PdfFileReader(download_path)
     pdfWriter = PdfFileWriter()
     for page in range(splitStart, splitEnd):
@@ -65,12 +70,12 @@ def split_upload_file(pageName, splitStart, splitEnd):
         pdfWriter.write(f)
         f.close()
 
-    upload_path = '/tmp/{0}_{1}.pdf'.format(s3_file_name, pageName)
-    upload_key_name = '{0}{1}_{2}.pdf'.format(s3_file_dir, s3_file_base_name, pageName)
-    s3_client.upload_file(upload_path, bucket, upload_key_name)
+    upload_path = '/tmp/{0}_{1}.pdf'.format(_s3_file_name, writePageName)
+    upload_key_name = '{0}{1}_{2}.pdf'.format(s3_file_dir, _s3_file_base_name, writePageName)
+    s3_client.upload_file(upload_path, _bucket, upload_key_name)
 
 ```
-
+<br/>
 &nbsp;순조롭게 분리가 되었고 사용하는데 문제가 없었습니다.
 
 ## 위기
