@@ -1,6 +1,6 @@
 {
   "name": "tada-tech-blog",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "blog-tech.tadatada.com",
   "keywords": [
@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "dev": "gatsby develop",
+    "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
