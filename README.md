@@ -32,10 +32,9 @@ npm -v
 ```
 
 ### 실행하기
-
-1. `yarn` / `yarn install`: 필요한 패키지 내용을 설치합니다.
-2. `yarn dev`: 로컬에서 Gatsby를 실행합니다.
-   - `http://localhost:8000` 을 기본으로 합니다.
+```bash
+$ yarn # 필요한 디펜던시를 설치합니다.
+$ yarn dev # http://localhost:8000 에 개발 블로그 서버를 띄웁니다
 
 ## 게시물 작성
 
