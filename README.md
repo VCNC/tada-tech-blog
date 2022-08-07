@@ -137,7 +137,7 @@ authors:
 ## 배포
 
 - [Gatsby Cloud]에서 VCNC-Bot 계정으로 로그인하여 확인할 수 있습니다.
-- 해당 계정 정보는 1Password 에 있습니다.
+- 계정 정보는 1Password 에서 확인 가능합니다.
 
 [gatsby]: https://www.gatsbyjs.com/
 [markdown]: http://daringfireball.net/projects/markdown/
