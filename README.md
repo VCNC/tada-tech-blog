@@ -52,8 +52,7 @@ $ yarn dev # http://localhost:8000 에 개발 블로그 서버를 띄웁니다
 
 1. **글의 제목과 주제를 선정하고, 브랜드 디자인팀에 대표 이미지를 요청**
 
-   - [#req_mkt_bx] 채널에 [대표 이미지 구글 드라이브]에 생성할 폴더명과 이미지에 담고 싶은 메타포를  요청합니다.
-   - [@러브 (Love Jeong)] 멘션해주세요!
+   - [#req_mkt_bx] 채널에 `기술블로그 게시글 대표이미지 요청` 워크플로우를 통해 요청합니다.
 
 2. **`main` 브랜치로부터 개인 브랜치를 생성**
 
@@ -86,5 +85,5 @@ $ yarn dev # http://localhost:8000 에 개발 블로그 서버를 띄웁니다
 [글 작성 양식]: #글-작성-양식
 [#req_mkt_bx]: https://vcnc.slack.com/archives/CBBKZSXF1
 [대표 이미지 구글 드라이브]: https://drive.google.com/drive/u/1/folders/12bWBSvZ39IgqGOo4SgOqYE4Mi616GxoK
-[@러브 (Love Jeong)]: https://vcnc.slack.com/team/UBPN88R5J
+[@러브 (love jeong)]: https://vcnc.slack.com/team/UBPN88R5J
 [typora]: https://typora.io/
