@@ -3,12 +3,17 @@
 `TADA 기술 블로그 Repository` 입니다.  
 다양한 경험을 공유하여 다른 개발자들의 의사 결정에 도움이 되고, 상호 피드백을 통해 보다 더 성장하기 위한 글을 작성하는 공간입니다.
 
+<br/>
+
 ## 개발 환경
 
 - [Gatsby]로 작성되어 있습니다.
   - 게시물 작성은 [Markdown]으로 작성하고, 경우에 따라 inline html을 사용합니다.
   - 마크다운 문법이 화면에 이상하게 적용되면 알려주시기 바랍니다.
 - 게시물 댓글은 [Utterances]를 통해 [여기에](https://github.com/VCNC/blog-comment) 수집합니다.
+
+<br/>
+
 
 ## 로컬에서 실행하기
 
@@ -37,6 +42,8 @@ $ npm -v
 $ yarn # 필요한 디펜던시를 설치합니다.
 $ yarn dev # http://localhost:8000 에 개발 블로그 서버를 띄웁니다
 ```
+
+<br/>
 
 ## 게시물 작성
 
@@ -84,6 +91,4 @@ $ yarn dev # http://localhost:8000 에 개발 블로그 서버를 띄웁니다
 [글 작성 양식 보러가기]: https://github.com/VCNC/tada-tech-blog/tree/main/_posts#readme
 [글 작성 양식]: #글-작성-양식
 [#req_mkt_bx]: https://vcnc.slack.com/archives/CBBKZSXF1
-[대표 이미지 구글 드라이브]: https://drive.google.com/drive/u/1/folders/12bWBSvZ39IgqGOo4SgOqYE4Mi616GxoK
-[@러브 (love jeong)]: https://vcnc.slack.com/team/UBPN88R5J
 [typora]: https://typora.io/
