@@ -122,7 +122,7 @@ authors:
    - 글을 작성한 후에는 Push & Pull Request 를 진행해주세요.
    - `Label`에 `New Post`를 선택해주세요.
    - `Assignee`는 본인으로 입력 부탁드립니다.
-   - PR 이 등록되면, Preview 배포가 진행됩니다.
+   - PR 이 등록되면, [Gatsby Cloud]에서 Preview 배포가 진행됩니다.
 
 5. **리뷰 진행**
 
@@ -132,6 +132,13 @@ authors:
 6. **실서버 배포**
    - PR이 `main` 브랜치로 Merge 되면 자동으로 실서버 배포가 진행됩니다.
 
+<br/>
+
+## 배포
+
+- [Gatsby Cloud]에서 VCNC-Bot 계정으로 로그인하여 확인할 수 있습니다.
+- 해당 계정 정보는 1Password 에 있습니다.
+
 [gatsby]: https://www.gatsbyjs.com/
 [markdown]: http://daringfireball.net/projects/markdown/
 [disqus]: https://disqus.com/
@@ -140,3 +147,4 @@ authors:
 [참고 예시]: https://github.com/VCNC/tada-tech-blog/edit/main/_posts/2022-07-25-tech-blog-renewal/index.md
 [#req_mkt_bx]: https://vcnc.slack.com/archives/CBBKZSXF1
 [글 작성 양식]: #게시물-작성
+[gatsby cloud]: https://www.gatsbyjs.com/products/cloud/
