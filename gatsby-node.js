@@ -31,7 +31,7 @@ exports.createPages = async ({ graphql, actions }) => {
     {
       allMarkdownRemark(
         sort: { fields: [frontmatter___date], order: DESC }
-        filter: { frontmatter: { title: { ne: "DUMMY" } } }
+        filter: { fileAbsolutePath: { regex: "/index/" }, frontmatter: { title: { ne: "DUMMY" } } }
       ) {
         edges {
           node {
