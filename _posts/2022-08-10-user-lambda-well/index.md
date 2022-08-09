@@ -3,7 +3,7 @@ layout: post
 date: 2022-08-12 10:00:00 +09:00
 permalink: /2022-08-12-use-lambda-well
 
-title: '실전에서 AWS Lambda 적극 활용하기'
+title: '실전에서 AWS Lambda 적극 활용해본 이야기'
 thumbnail:
   - color: ./thumbnail-color.png
     gray: ./thumbnail-gray.png
@@ -23,12 +23,34 @@ authors:
 
 ## 발단
 
-&nbsp;DRS를 만들다가 다른 요구사항들은 모두 설계를 했는데 2가지 요구사항에서 어려움을 맞게 되었습니다.
+&nbsp;타다 파트너가 되기 위해서 온보딩을 하는 단계는 아래와 그림과 같습니다.
+
+<div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
+  <div style="max-width: 500px; width: 100%;">
+    <img src="./lambda-image-3.png" alt="lambda-image" />
+  </div>
+</div>
+
+&nbsp;[타다 드라이버 지원 페이지](https://appyly.tadatada.com)에서 지원을 하게 되면 타다에 방문하여 계약을 하게 됩니다. 그 이후 고급면허를 따기위해서 고급교육을 이수하고 구청에서 사업인가를 위해 인가 신청을 합니다. 최종적으로 타다 브랜드에 맞게 상품화를 마치면 운행을 시작하게 됩니다.
+
+<div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
+  <div style="max-width: 500px; width: 100%;">
+    <img src="./lambda-image-4.jpeg" alt="lambda-image" />
+  </div>
+</div>
+
+<br/>
+
+&nbsp;위 과정의 상세 요구사항을 분석하다가 다른 요구사항들은 모두 설계를 했는데 2가지 요구사항에서 어려움을 맞게 되었습니다.
 
 - **드라이버님의 제출 서류들을 한 번에 스캔하면 PDF로 저장하고 이를 종류별로 분리해서 따로 저장을 해야 한다.**
 - **차량에 와이파이 단말기를 달고 부착 사진을 업로드하면 사진의 QR 코드를 읽어서 차량에 코드를 등록해야한다.**
 
-&nbsp;위 두 가지 기능은 기존에 Google Spread Sheet에서 Colab을 이용하여 Google Drive에서 이미지 및 파일을 읽어드리고 python으로 작성된 프로그램을 통해 각각 요구사항을 해결하고 있었습니다. 위 두 가지 기능을 두고 팀원들끼리 어떤 방법으로 구현할지 고민을 했습니다. 원래 저희 기술 스택 (Next.js, Spring Boot) 만으로 구현을 하려면 파일을 Web Browser에서 Spring Boot Sever로 전송하고 해당 파일을 읽어서 Java libray를 이용해서 PDF 분리 또는 QR 코드 인식을 진행하고 결과를 DB에 업데이트하는 방식으로 진행해야 했습니다.
+&nbsp;위 두 가지 기능은 기존에 Google Spread Sheet에서 [Colab](https://colab.research.google.com/)을 이용하여 Google Drive에서 이미지 및 파일을 읽어드리고 python으로 작성된 프로그램을 통해 각각 요구사항을 해결하고 있었습니다. 위 두 가지 기능을 두고 팀원들끼리 어떤 방법으로 구현할지 고민을 했습니다. 
+
+<br/>
+
+&nbsp;원래 저희 기술 스택 (Next.js, Spring Boot) 만으로 구현을 하려면 파일을 Web Browser에서 Spring Boot Sever로 전송하고 해당 파일을 읽어서 Java libray를 이용해서 PDF 분리 또는 QR 코드 인식을 진행하고 결과를 DB에 업데이트하는 방식으로 진행해야 했습니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="max-width: 500px; width: 100%;">
@@ -51,7 +73,7 @@ authors:
 
 ## 전개
 
-&nbsp;처음 pdf 파일 분리하는 코드는 간단했습니다.  [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제코드와 다를게 없이 Lambda Console Editor를 이용해 S3에 PDF가 특정 PostFix로 업로드 되면 해당 파일을 읽고 추가한 PDF Lib Layer를 Import해 PDF를 순서에 맞게 분할을해서 다시 S3에 업로드 하면 되었습니다.
+&nbsp;처음 pdf 파일 분리하는 코드는 간단했습니다.  [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제코드와 다를게 없이 Lambda Console Editor를 이용해 S3에 PDF가 특정 PostFix로 업로드 되면 해당 파일을 읽고 추가한 PDF [Lib Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)를 Import해 PDF를 순서에 맞게 분할을해서 다시 S3에 업로드 하면 되었습니다.
 
 <br/>
 
@@ -80,7 +102,7 @@ def split_upload_file(writePageName, splitStart, splitStart):
 
 ## 위기
 
-&nbsp;QR코드 인식을 위해서 [pyzbar](https://pypi.org/project/pyzbar/) 를 Layer로 추가하려고 했는데 문제가 생겼습니다. Shared Library인 [zbar](http://zbar.sourceforge.net/) 를 설치를 해야 했는데 Shared Library는 Layer로 추가해도 pyzbar에서 읽기가 불가능했고 Docker 이미지를 만들어야 했습니다. 그래서 이미지를 이용해서 Lambda를 만들기로 하였고 다시 DockerFile부터 만들기 시작 했습니다.
+&nbsp;QR코드 인식을 위해서 [pyzbar](https://pypi.org/project/pyzbar/) 를 Lib Layer로 추가하려고 했는데 문제가 생겼습니다. Shared Library인 [zbar](http://zbar.sourceforge.net/) 를 설치를 해야 했는데 Shared Library는 Layer로 추가해도 pyzbar에서 읽기가 불가능했고 Docker 이미지를 만들어야 했습니다. (Lambda 에서 Sharing Layer 추가 [가이드 문서](https://aws.amazon.com/premiumsupport/knowledge-center/lambda-linux-binary-package/?nc1=h_ls) ) 그래서 이미지를 이용해서 Lambda를 만들기로 하였고 다시 DockerFile부터 만들기 시작 했습니다.
 
 ```DockerFile
 
@@ -114,7 +136,7 @@ CMD [ "app.handler" ]
 &nbsp;앞으로 좀 더 발전시켜보면 좋을 것들은
 
 - **QR 코드 스캔이 에러 났을 때 Slack으로 알람 주는 내용을 추가해 볼 예정입니다. (QR 코드 사진 자체가 퀄리티가 떨어지면 에러가 나는 경우가 종종 있습니다.)**
-- **지금은 스캔 된 PDF 문서에 내용을 직접 타이핑해서 DRS에 입력하고 있는데 가 OCR 기술로 읽는 Lambda Function를 만들어볼 예정입니다.**
+- **지금은 스캔 된 PDF 문서에 내용을 직접 타이핑해서 DRS에 입력하고 있는데, OCR 기술로 읽는 Lambda Function를 만들어볼 예정입니다.**
 
 <br/>
 
