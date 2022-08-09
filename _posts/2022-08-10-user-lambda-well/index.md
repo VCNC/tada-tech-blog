@@ -30,6 +30,7 @@ authors:
     <img src="./lambda-image-3.png" alt="lambda-image" />
   </div>
 </div>
+<figcaption>타다 드라이버 온보딩 과정</figcaption>
 
 &nbsp;[타다 드라이버 지원 페이지](https://appyly.tadatada.com)에서 지원을 하게 되면 타다에 방문하여 계약을 하게 됩니다. 그 이후 고급면허를 따기위해서 고급교육을 이수하고 구청에서 사업인가를 위해 인가 신청을 합니다. 최종적으로 타다 브랜드에 맞게 상품화를 마치면 운행을 시작하게 됩니다.
 
@@ -38,13 +39,21 @@ authors:
     <img src="./lambda-image-4.jpeg" alt="lambda-image" />
   </div>
 </div>
+<figcaption>타다 넥스트 상품화</figcaption>
 
 <br/>
 
 &nbsp;위 과정의 상세 요구사항을 분석하다가 다른 요구사항들은 모두 설계를 했는데 2가지 요구사항에서 어려움을 맞게 되었습니다.
 
-- **드라이버님의 제출 서류들을 한 번에 스캔하면 PDF로 저장하고 이를 종류별로 분리해서 따로 저장을 해야 한다.**
-- **차량에 와이파이 단말기를 달고 부착 사진을 업로드하면 사진의 QR 코드를 읽어서 차량에 코드를 등록해야한다.**
+- **드라이버님의 제출 서류들을 한 번에 스캔하면 PDF로 저장하고 이를 종류별로 파일분리해서 따로 저장을 해야 한다.**
+- **차량 상품화 가정에서 차량에 와이파이 단말기를 달고 부착된 사진을 찍어서 업로드하면 와이파이에 부착된 QR 코드를 읽어서 차량에 코드를 매핑해야한다.**
+
+<div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
+  <div style="max-width: 500px; width: 100%;">
+    <img src="./lambda-image-5.jpeg" alt="lambda-image" />
+  </div>
+</div>
+<figcaption>와이파이 QR코드 사진</figcaption>
 
 &nbsp;위 두 가지 기능은 기존에 Google Spread Sheet에서 [Colab](https://colab.research.google.com/)을 이용하여 Google Drive에서 이미지 및 파일을 읽어드리고 python으로 작성된 프로그램을 통해 각각 요구사항을 해결하고 있었습니다. 위 두 가지 기능을 두고 팀원들끼리 어떤 방법으로 구현할지 고민을 했습니다. 
 
@@ -57,6 +66,7 @@ authors:
     <img src="./lambda-image-1.png" alt="lambda-image" />
   </div>
 </div>
+<figcaption>변경해야하는 구조</figcaption>
 
 &nbsp;위 방법에는 2가지 문제점이 있었습니다.
 
@@ -70,6 +80,7 @@ authors:
     <img src="./lambda-image-2.png" alt="lambda-image" />
   </div>
 </div>
+<figcaption>새로 고안한 구조</figcaption>
 
 ## 전개
 
