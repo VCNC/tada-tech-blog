@@ -141,7 +141,8 @@ const md_iframe = css`
 `
 
 const md_table = css`
-  margin: 30px 0;
+  margin: 30px auto;
+  width: 100%;
   font-size: 14px;
   font-weight: 400;
   line-height: 25.2px;
@@ -153,6 +154,7 @@ const md_table = css`
   & th {
     padding: 8px;
     text-align: center;
+    vertical-align: middle;
     font-weight: 700;
     border-left: 0.5px solid ${Color.Navy200};
     border-right: 0.5px solid ${Color.Navy200};
@@ -171,6 +173,7 @@ const md_table = css`
   & td {
     padding: 8px;
     text-align: left;
+    vertical-align: middle;
     border-top: 1px solid ${Color.Navy200};
     border-left: 0.5px solid ${Color.Navy200};
     border-right: 0.5px solid ${Color.Navy200};
