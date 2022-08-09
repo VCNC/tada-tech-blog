@@ -118,15 +118,3 @@ CMD [ "app.handler" ]
 
 <br/>
 
-&nbsp;기술 블로그 개편은 단지 저희가 만족하기 위한 것이 아닙니다. 진심으로 저희의 고민이 세상에 도움을 줄 수 있다는 확신이 있고, 이를 더 많은 사람과 공유할 수 있기를 바랍니다. 타다는 이동에서 발생하는 수많은 문제를 기술로 해결하고 싶은 팀입니다. 기술적 난제들을 고민하면서 좋은 팀과 서비스를 함께 만들고 키워나갈 좋은 분들을 기다리고 있습니다. 앞으로도 저희의 여정에 많은 관심 부탁드립니다.
-
-[처음]: /2013-04-15-hello-world
-[타다]: https://tadatada.com/
-[대표 이미지를 제작]: https://www.instagram.com/designedbytada/
-[존재하는 테마]: http://jekyllthemes.org/
-[jekyll]: https://jekyllrb.com/
-[gatsby]: https://www.gatsbyjs.com/
-[plugin]: https://www.gatsbyjs.com/plugins
-[disqus]: https://disqus.com/
-[utterances]: https://utteranc.es/
-[rss]: https://ko.wikipedia.org/wiki/RSS
