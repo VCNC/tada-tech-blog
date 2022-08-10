@@ -13,7 +13,7 @@ tags: ['퇴근콜']
 
 authors:
   - name: 'Julian Kim'
-    profileImage: ./sadcat.png
+    profileImage: ./sadcat.jpg
 ---
 
 퇴근콜을 함께 정의한 Sini, Cheese, Nate께 감사드립니다.
