@@ -32,7 +32,7 @@ authors:
 </div>
 <figcaption>타다 드라이버 온보딩 과정</figcaption>
 
-&nbsp;[타다 드라이버 지원 페이지](https://appyly.tadatada.com)에서 지원을 하게 되면 타다에 방문하여 계약을 하게 됩니다. 그 이후 고급면허를 따기위해서 고급교육을 이수하고 구청에서 사업인가를 위해 인가 신청을 합니다. 최종적으로 타다 브랜드에 맞게 상품화를 마치면 운행을 시작하게 됩니다.
+&nbsp;[타다 드라이버 지원 페이지](https://apply.tadatada.com)에서 지원을 하게 되면 타다에 방문하여 계약을 하게 됩니다. 그 이후 고급면허를 따기위해서 고급교육을 이수하고 구청에서 사업인가를 위해 인가 신청을 합니다. 최종적으로 타다 브랜드에 맞게 상품화를 마치면 운행을 시작하게 됩니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="max-width: 500px; width: 100%;">
@@ -50,7 +50,7 @@ authors:
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="max-width: 500px; width: 100%;">
-    <img src="./lambda-image-5.jpeg" alt="lambda-image" />
+    <img src="./lambda-image-5.png" alt="lambda-image" />
   </div>
 </div>
 <figcaption>와이파이 QR코드 사진</figcaption>
@@ -59,7 +59,7 @@ authors:
 
 <br/>
 
-&nbsp;원래 저희 기술 스택 (Next.js, Spring Boot) 만으로 구현을 하려면 파일을 Web Browser에서 Spring Boot Sever로 전송하고 해당 파일을 읽어서 Java libray를 이용해서 PDF 분리 또는 QR 코드 인식을 진행하고 결과를 DB에 업데이트하는 방식으로 진행해야 했습니다.
+&nbsp;원래 저희 기술 스택 (Next.js, Spring Boot)을 활용하려면 파일을 Web Browser에서 Spring Boot Sever로 전송하고 해당 파일을 읽어서 Java libray를 이용해서 PDF 분리 또는 QR 코드 인식을 진행하고 결과를 DB에 업데이트하는 방식으로 진행해야 했습니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="max-width: 500px; width: 100%;">
@@ -68,12 +68,13 @@ authors:
 </div>
 <figcaption>변경해야하는 구조</figcaption>
 
-&nbsp;위 방법에는 2가지 문제점이 있었습니다.
+&nbsp;위 방법에는 3가지 문제점이 있었습니다.
 
 - **기존 web에서 이미지 업로드는 서버를 거치지 않고 바로 S3로 업로드를 했었는데 불필요하고, 부하가 큰 통신 과정이 추가되어야 했습니다.**
+- **PDF를 분리하고 QR코드를 읽어드리는 함수가 많은 자원을 사용하는 기능이라서 분리된 환경에서 다뤄야 한다고 생각했습니다.**
 - **기존에 Colab에서 구현된 코드는 python이였고 이를 Java로 전환하는데는 새로 코드를 짜야 했습니다.**
 
-&nbsp;그러다 AWS에서 제공하는 [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제 코드에 착안해서 Lambda 및 S3 Trigger를 통해서 python으로 개발하자는 아이디어가 나왔고 만장일치로 진행하게 되었습니다.
+&nbsp;Colab 보다는 S3와 동일하게 AWS로 통일하는게 좋다고 판단했고, 그러다 AWS에서 제공하는 [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제 코드에 착안해서 Lambda 및 S3 Trigger를 통해서 python으로 개발하자는 아이디어가 나왔고 만장일치로 진행하게 되었습니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="max-width: 500px; width: 100%;">
@@ -119,15 +120,18 @@ def split_upload_file(writePageName, splitStart, splitStart):
 
 FROM public.ecr.aws/lambda/python:3.8
 
-ENV ZBAR_PATH=/var/task/usr/lib/libzbar.so.0.3.0 
+ENV ZBAR_PATH=/var/task/usr/lib/libzbar.so.0.3.0
 
-COPY app.py ${LAMBDA_TASK_ROOT} 
+COPY app.py ${LAMBDA_TASK_ROOT}
 
-COPY lib usr/lib 
+COPY lib usr/lib
 
-COPY requirements.txt  . 
+COPY requirements.txt  .
 
-RUN  pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}" 
+RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
+
+RUN yum install git -y
+RUN git clone https://github.com/nickovs/pyzbar.git
 
 CMD [ "app.handler" ]
 
@@ -135,19 +139,24 @@ CMD [ "app.handler" ]
 
 <br/>
 
-&nbsp;AWS Amazon Docker 이미지를 이용했고 미리 amazonlinux를 이용해서 zbar lib를 만들었고 이를 COPY 하여 라이브러리로 사용했습니다. Lib를 COPY 하고 나니 PIP를 이용해서 pyzbar를 이용해서 intall 하는데 성공할 수 있었습니다. 여기서 ZBAR_PATH를 바로 못 찾는 경우가 있어 ZBAR_PATH를 강제로 지정할 수 있도록 pyzbar 코드에서 Shared Library 찾는 코드를 일부 수정하여 활용하였습니다. [링크](https://github.com/nickovs/pyzbar) 코드 참고
-
+- 우선 Lambda의 python 이미지를 활용하여
+- amazonlinux를 이용해서 미리 만든 zbar lib([참고링크](https://gist.github.com/nickovs/f097c577df90bdeb98ea0127c60e3462))를 COPY 하여 라이브러리로 사용했습니다. 
+- Lib를 COPY 하고 나니 PIP를 이용해서 pyzbar를 이용해서 intall 하는데 성공할 수 있었습니다. 
+- 여기서 ZBAR_PATH를 바로 못 찾는 경우가 있어 ZBAR_PATH를 강제로 지정할 수 있도록 pyzbar 코드에서 Shared Library 찾는 코드를 일부 수정하여 활용하였습니다. ([링크](https://github.com/nickovs/pyzbar) 코드 참고)
 
 
 ## 결말
 
-&nbsp;DRS는 7월 중순 OPEN 하여 매일 들어오는 드라이버 분들의 계약을 진행하고 있고 역시 PDF 분리 및 QR-Code Scan을 원활하게 사용하고 있습니다.
+&nbsp;이와 같은 단순한 구조로 인해 빠르게 오픈할 수 있었던 DRS는 7월 중순 부터 매일 들어오는 드라이버 분들의 계약을 진행하고 있습니다. 물론 안정적이고, 원활하게 PDF 분리 및 QR-Code Scan을 사용하고 있습니다.
 
+<br/>
 
 &nbsp;앞으로 좀 더 발전시켜보면 좋을 것들은
 
 - **QR 코드 스캔이 에러 났을 때 Slack으로 알람 주는 내용을 추가해 볼 예정입니다. (QR 코드 사진 자체가 퀄리티가 떨어지면 에러가 나는 경우가 종종 있습니다.)**
 - **지금은 스캔 된 PDF 문서에 내용을 직접 타이핑해서 DRS에 입력하고 있는데, OCR 기술로 읽는 Lambda Function를 만들어볼 예정입니다.**
+
+&nbsp;이러한 저희 인터널 프로덕트팀에서는 이 글에서 해결해 나간 상황처럼 다양한 문제를 기술 스택의 한계를 가지지 않고 슬기롭게 해결해 나갈 개발자를 찾고있습니다. :)
 
 <br/>
 
