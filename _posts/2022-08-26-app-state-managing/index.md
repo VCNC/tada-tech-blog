@@ -60,6 +60,9 @@ authors:
                   // 이 flag 는 가능하면 Root 에서만 사용하게 될 것이다.
                   if (currentForwardRide != null && currentForwardRide.acceptedAt == null) {
                     // ...
+                  }
+              }
+          }
 ```
 
 도메인 지식이 충분하지 않은 상태에서 복잡한 상태를 변경하는 코드를 작성할 시 버그를 만들어 낼 가능성이 높고
