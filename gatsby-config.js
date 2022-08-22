@@ -190,7 +190,10 @@ module.exports = {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
         trackingId: ['G-W2REEG4KJW'],
-        head: true,
+        pageConfig: {
+          head: false,
+          origin: 'https://blog-tech.tadatada.com/',
+        },
       },
     },
   ],
