@@ -193,5 +193,12 @@ module.exports = {
         head: true,
       },
     },
+    {
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+          trackingId: `323261037`,
+          head: true,
+      },
+  },
   ],
 }
