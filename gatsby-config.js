@@ -187,18 +187,11 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-google-analytics',
+      resolve: `gatsby-plugin-gtag`,
       options: {
-        trackingId: '323261037',
+        trackingId: `323261037`,
         head: true,
       },
     },
-    {
-      resolve: `gatsby-plugin-gtag`,
-      options: {
-          trackingId: `323261037`,
-          head: true,
-      },
-  },
   ],
 }
