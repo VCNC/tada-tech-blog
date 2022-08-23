@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CopyToClipboard from 'react-copy-to-clipboard'
+// import CopyToClipboard from 'react-copy-to-clipboard'
 import { getUrlPath } from '~lib/utils'
 import { LinkIcon } from '~components/Icon'
 import { LinkIconWrapper } from '~components/Post/PostHeader/CopyLink/Styled'
@@ -11,11 +11,11 @@ export const CopyLink = () => {
 
   return (
     <>
-      <CopyToClipboard text={getUrlPath()}>
+      {/* <CopyToClipboard text={getUrlPath()}> */}
         <LinkIconWrapper onClick={() => setIsToastClicked(true)}>
           <LinkIcon />
         </LinkIconWrapper>
-      </CopyToClipboard>
+      {/* </CopyToClipboard> */}
       <Toast isToastClicked={isToastClicked} setIsToastClicked={setIsToastClicked}>
         링크가 복사되었습니다
       </Toast>
