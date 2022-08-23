@@ -9,6 +9,16 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: ['G-W2REEG4KJW'],
+        pageConfig: {
+          head: true,
+          origin: 'https://blog-tech.tadatada.com/',
+        },
+      },
+    },
+    {
       resolve: 'gatsby-plugin-manifest',
       options: {
         icon: './static/images/ic_favicon_tada.png',
@@ -184,16 +194,6 @@ module.exports = {
       resolve: `gatsby-plugin-disqus`,
       options: {
         shortname: `vcncengineeringblog`,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-google-gtag`,
-      options: {
-        trackingId: ['G-W2REEG4KJW'],
-        pageConfig: {
-          head: false,
-          origin: 'https://blog-tech.tadatada.com/',
-        },
       },
     },
   ],
