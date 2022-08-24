@@ -30,11 +30,7 @@ authors:
 
 [타다 드라이버 지원 페이지](https://apply.tadatada.com)에서 지원을 하게 되면 타다에 방문하여 계약을 하게 됩니다. 그 이후 고급 면허를 따기 위해서 고급 교육을 이수하고 구청에서 사업 인가를 위해 인가 신청을 합니다. 최종적으로 타다 브랜드에 맞게 상품화를 마치면 운행을 시작하게 됩니다. 이러한 과정에서 생성되는 계약서, 교육 이수 결과, 상품화 결과 및 사진 등을 DRS를 통해 관리하는 것이 요구사항이었습니다.
 
-<div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
-  <div style="max-width: 500px; width: 100%;">
-    <img src="./lambda-image-4.jpeg" alt="lambda-image" />
-  </div>
-</div>
+![image3](./lambda-image-4.png)
 <figcaption>타다 넥스트 상품화</figcaption>
 
 <br/>
@@ -69,7 +65,7 @@ Colab보다는 S3와 동일하게 AWS로 통일하는 게 좋다고 판단했고
 
 ## 전개
 
-처음 pdf 파일 분리하는 코드는 간단했습니다. [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제 코드와 다를 게 없이 Lambda Console Editor를 이용해 S3에 PDF가 특정 PostFix로 업로드되면 해당 파일을 읽어 드립니다. 그리고 추가한 [PDF Library](https://pypi.org/project/PyPDF2/)를 Lambda에서 외부 라이브러리를 추가하기 위해서 사용하는 [Lib Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)에 Import 해 PDF를 순서에 맞게 분할을 해서 다시 S3에 업로드하면 되었습니다.
+처음 pdf 파일 분리하는 코드는 간단했습니다. [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제 코드와 다를 게 없이 Lambda Console Editor를 이용해 S3에 PDF가 특정 PostFix로 업로드되면 해당 파일을 읽어 들입니다. 그리고 추가한 [PDF Library](https://pypi.org/project/PyPDF2/)를 Lambda에서 외부 라이브러리를 추가하기 위해서 사용하는 [Lib Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)에 Import 해 PDF를 순서에 맞게 분할을 해서 다시 S3에 업로드하면 되었습니다.
 
 <br/>
 
