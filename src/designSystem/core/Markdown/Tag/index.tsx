@@ -47,8 +47,11 @@ const md_p = css`
   font-size: 16px;
   font-weight: 400;
   line-height: 30.4px;
-  margin-bottom: 1.4em;
   word-break: keep-all;
+
+  & + p {
+    margin-top: 16px;
+  }
 `
 
 const md_ol = css`
