@@ -120,7 +120,7 @@ CS로 인입되는 버그 상황 중 일부는 앱 상태관리와 관련된 버
 이를 각각을 쪼개어 지엽적인 해결을 하기보다, 근본적으로 Android 개발팀의 니즈를 반영하는 상태관리 레이어를 개발하여 위 문제들을 수정하려고 했습니다.
 
 1. 상태 변화에 대한 테스트를 작성하여 변경에 대한 안정성을 만들면, 복잡한 상태로 인한 버그가 줄어들 것이다.
-2. 상태 관리에서 반복적으로 나타나는 패턴을 [플러그인](https://en.wikipedia.org/wiki/Plug-in_(computing))(미들웨어)화 하여 반복을 줄이고 관점 지향의 개발을 할 수 있도록 하면, 중복 코드 / 중복 버그를 줄일 수 있을 것이다.
+2. 상태 관리에서 반복적으로 나타나는 패턴을 [Plugin](미들웨어)화 하여 반복을 줄이고 관점 지향의 개발을 할 수 있도록 하면, 중복 코드 / 중복 버그를 줄일 수 있을 것이다.
 3. 상태 변화에 대한 모니터링 (디버깅) 을 쉽게할 수 있는 방법을 만들면 개발 도중 / CS 대응의 효율성을 높일 수 있을 것이다.
 
 위와 같은 가설을 확인할 수 있는 방향으로 리팩토링을 계획하였고, 그 로드맵은 아래와 같았습니다.
@@ -311,9 +311,9 @@ class MinimalBlockActionWhileFetching : DriverStateMachine.Middleware {
 - 순서대로 dispatch 된 Action 을 확인하거나
 - 임의로 action 을 dispatch 할 수 있는
 
-간단한 시각화 툴을 만들어 보고 싶었습니다 (마치 [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en) 같은)
+간단한 시각화 툴을 만들어 보고 싶었습니다 (마치 [Redux DevTools] 같은)
 
-그 과정에서 모바일 플랫폼 디버깅 플랫폼인 [Flipper](https://fbflipper.com/) 를 알게 되었고, 개인적인 흥미로 Flipper 를 위한 Plugin 을 제작하여 보았는데 생각보다 state 와 action 을 GUI 로 tracking 하고 디버깅하는 경험이 윤택해 져서 함께 소개드려봅니다.
+그 과정에서 모바일 플랫폼 디버깅 플랫폼인 [Flipper] 를 알게 되었고, 개인적인 흥미로 Flipper 를 위한 Plugin 을 제작하여 보았는데 생각보다 state 와 action 을 GUI 로 tracking 하고 디버깅하는 경험이 윤택해 져서 함께 소개드려봅니다.
 
 ### 테스트 환경 조성을 위한 밑거름
 
@@ -336,7 +336,7 @@ fun `실시간_콜을_수락하고_운행을_완료한다`() {
 }
 ```
 
-또한 현재 시작하지 못했지만, 전체적인 앱의 UI 가 StateMachine 의 State 에 의존하고 있으므로, 이 State 만 모킹한다면 쉽게 앱의 UI 를 표현할 수 있기에 이를 기반으로 [UI Snapshot Test](https://jestjs.io/docs/snapshot-testing) 를 손쉽게 진행할 수 있을 것으로 기대하고 있습니다.
+또한 현재 시작하지 못했지만, 전체적인 앱의 UI 가 StateMachine 의 State 에 의존하고 있으므로, 이 State 만 모킹한다면 쉽게 앱의 UI 를 표현할 수 있기에 이를 기반으로 [UI Snapshot Test] 를 손쉽게 진행할 수 있을 것으로 기대하고 있습니다.
 
 ```kotlin
 @Test
@@ -379,3 +379,10 @@ fun `호출예약_이전_대기중_화면이_기존과_동일하게_보여진다
 <br/>
 
 긴 글 읽어 주셔서 감사합니다 :)
+
+[gRPC]: https://grpc.io/
+[RIBs]: https://blog-tech.tadatada.com/2019-05-08-tada-client-development
+[Plugin]: https://en.wikipedia.org/wiki/Plug-in_(computing)
+[Redux DevTools]: https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en
+[Flipper]: https://fbflipper.com/
+[UI Snapshot Test]: https://jestjs.io/docs/snapshot-testing
