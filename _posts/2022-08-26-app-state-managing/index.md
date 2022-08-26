@@ -43,7 +43,7 @@ authors:
 - 운행 중이라면 고객을 태운 상황인지
 - 운행과 별도로 존재하는 다음에 수행할 예약 운행이 있는지 등등...
 
-이와 같이, 오프라인의 상태가 앱의 상태로 대변되는 도메인 특성상 깊고 복잡한 상태를 가지고있습니다. 이런 상태를 잘 관리할 수 있도록 [RIBs](https://blog-tech.tadatada.com/2019-05-08-tada-client-development) 라는 아키텍쳐를 선택한 것 또한 위의 상황을 잘 보여주고 있습니다.
+이와 같이, 오프라인의 상태가 앱의 상태로 대변되는 도메인 특성상 깊고 복잡한 상태를 가지고있습니다. 이런 상태를 잘 관리할 수 있도록 [RIBs] 라는 아키텍쳐를 선택한 것 또한 위의 상황을 잘 보여주고 있습니다.
 
 ![타다 드라이버 앱 RIB Tree]()
 > 현재 타다 드라이버 앱 내의 State Tree 를 유추할 수 있는 RIB Tree
@@ -78,11 +78,11 @@ fun updateStateAfterRideDropOff(/* ...  */) {
 
 ### 2. 상태 변경에서 반복적으로 나타나는 코드가 존재한다.
 
-타다 드라이버 앱은 서버와의 통신에 REST API, Grpc Push 를 함께 사용하고 있습니다. 이중화된 상태 변경 요인으로 인해 네트워크 상황에 따라 논리적인 상태 변경 순서와 네트워크를 통해 전달된 상태 변경 순서가 상이해 지며 발생하는 버그들이 있었고 이를 위한 `상태 업데이트용 순서 보정 코드` 를 작성한다던지
+타다 드라이버 앱은 서버와의 통신에 HTTP, [gRPC] 를 함께 사용하고 있습니다. 이중화된 상태 변경 요인으로 인해 네트워크 상황에 따라 논리적인 상태 변경 순서와 네트워크를 통해 전달된 상태 변경 순서가 상이해 지며 발생하는 버그들이 있었고 이를 위한 `상태 업데이트용 순서 보정 코드` 를 작성한다던지
 
 ![이중화된 상태 업데이트로 발생하는 버그 Diagram]()
 
-동시에 Atomic 하게 발생해야 하는 상태 업데이트가 하나씩 발생하며 Observe 가 여러번 발생하거나 `두 상태 업데이트간의 간섭으로 생기는 미묘한 동시성 버그 해결을 위한 코드` 등
+동시에 Atomic 하게 발생해야 하는 상태 업데이트가 개별로 발생하며 event emit 이 불필요하게 여러번 발생하거나 `두 상태 업데이트간의 간섭으로 생기는 미묘한 동시성 버그 해결을 위한 코드` 등
 
 ![Atomic 하지 않은 상태 업데이트로 발생하는 버그 Diagram]()
 
@@ -153,8 +153,8 @@ CS로 인입되는 버그 상황 중 일부는 앱 상태관리와 관련된 버
 
 > (현) 상태관리 코드가 응집되어 있는 형태
 
-상태에 대한 변화를 만드는 코드를 모두 한 곳으로 응집시켰고, 이 기계적인 작업의 결과는 매우 커다랗고, 수많은 메서드를 가지고 있는 Monster Module 이 되었습니다.
-이제 우리가 해야할 일은 퍼져있던 로직이 한데 모인 Monster Module 을 **내부적인 책임 분리나 확장에 용이한 Module 로 만드는 일** 이었습니다.
+상태에 대한 변화를 만드는 코드를 모두 한 곳으로 응집시켰고, 이 기계적인 작업의 결과는 매우 커다랗고, 수많은 메서드를 가지고 있는 거대한 모듈이 되었습니다.
+이제 우리가 해야할 일은 퍼져있던 로직이 한데 모인 거대한 모듈을 **내부적인 책임 분리나 확장에 용이한 모듈로 만드는 일** 이었습니다.
 
 ## 2. 안정적이고, 확장에 유리한 모듈로 개선하자
 
@@ -189,7 +189,7 @@ Redux 의 간단한 매커니즘을 카피하여 유사한 인터페이스를 �
 ```kotlin
 class MinimalStateMachineImpl {
   private val _state = MutableDataStream()
-  override val state = DataStream()
+  override val state = _state.toDataStream()
 
   private val combinedReducer: Reducer // 주입 생략
   private val middlewares: List<Middleware> // 주입 생략
@@ -202,7 +202,7 @@ class MinimalStateMachineImpl {
     ) { next, middleware ->
      middleware.create(next)
     }
-    _state.uppdate(nextStateGenerator(action))
+    _state.update(nextStateGenerator(action))
   }
 }
 
@@ -235,7 +235,7 @@ class RideReducer: Reducer {
 }
 ```
 
-또한 분리 과정에서 위와 같은 형태로 Reducer 를 쪼개어 가면서 커다란 Monster Module 을 책임에 따라 (실시간 운행을 위한 상태, 예약 운행을 위한 상태 등) 분리하였습니다.
+또한 분리 과정에서 위와 같은 형태로 Reducer 를 쪼개어 가면서 거대한 모듈을 책임에 따라 (실시간 운행을 위한 상태, 예약 운행을 위한 상태 등) 분리하였습니다.
 
 ## 3. StateMachine 을 통해 해결하는 문제
 
@@ -257,7 +257,7 @@ class RideReducer: Reducer {
 따라서 상태 변화가 발생할 때 마다 그 변화를 Logging 하여 실시간으로 Log 를 보거나, 파일시스템에 저장하고 CS 인입에 전달 받을 수 있는 구조를 만들어 문제를 해결하였습니다.
 
 ```kotlin
-class MinialLoggerMiddleware {
+class MinimalLoggerMiddleware {
     override fun create(next: (Action) -> State): (Action) -> State {
         return { action ->
             val nextState = next(action)
@@ -271,11 +271,11 @@ class MinialLoggerMiddleware {
 
 #### `BlockActionWhileFetchingMiddleware`
 
-앞서 제시된 문제 중 REST API 의 응답을 기다리는 중에 Grpc Push 가 꽂혀 매끄럽지 못한 사용성이 발생하는 문제는 `UpdateBlockerMiddleware` 의 추가로 해결하였습니다.
-일반적인 REST API 호출의 시작/종료 시점에 락을 잡고 여는 액션을 추가하여 Update 를 호출 중 지연시키는 Middleware 를 만들었습니다.
+앞서 제시된 문제 중 HTTP API 의 응답을 기다리는 중에 [gRPC] Push 가 꽂혀 매끄럽지 못한 사용성이 발생하는 문제는 `UpdateBlockerMiddleware` 의 추가로 해결하였습니다.
+일반적인 HTTP API 호출의 시작/종료 시점에 락을 잡고 여는 액션을 추가하여 Update 를 호출 중 지연시키는 Middleware 를 만들었습니다.
 
 ```kotlin
-class MinialBlockActionWhileFetching : DriverStateMachine.Middleware {
+class MinimalBlockActionWhileFetching : DriverStateMachine.Middleware {
     // 실제로는 복수의 fetch 요청에 대한 페어링 등이 추가되어 있습니다.
     private val isFetchingRequest = AtomicBoolean(false)
 
