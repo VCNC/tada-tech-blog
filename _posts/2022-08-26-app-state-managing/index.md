@@ -56,21 +56,25 @@ authors:
 와 같은 도메인 맥락이 충분하지 않은 상태에서 상태 변경 코드를 작성하면 버그를 만들어 낼 가능성이 높습니다.
 
 ```kotlin
-fun updateStateAfterRideDropOff(/* ...  */) {
-  // ...
-  // Canceled, DroppedOff 의 경우 서버 상태와 상이할 가능성이 있으니 상태 보정을 진행한다.
+// 실제 코드를 단순화한 코드라 오류가 있을수 있습니다.
+fun updateStateAfterRideDropOff(/* ... */) {
+  // 취소된 상태나 하차완료 상태의 경우 서버 상태와 상이할 가능성이 있으니 상태 보정을 진행한다.
   if (currentRide.status.isIn(RideStatus.CANCELED, RideStatus.DROPPED_OFF)) {
-      // 라이드의 DroppedOff 처리 시 미리배차 전환이 발생하니 currentRide 의 업데이트를 지연시킨다.
-      if (ride != null) {
-          dataStore.forwardRide.value = ride
-      } else if (clearPendingRide) {
-          // Pending 상태에서 아직 dataStore 에 남아있는 Ride 는 별도의 화면이 존재하지 않기 때문에 바로 날려버린다.
-          if (currentForwardRide != null && currentForwardRide.acceptedAt == null) {
-            // ...
+      // 미리배차된 라이드가 존재할시, 미리배차된 라이드로 전환되어야 하므로
+      // 현재 하차완료된 라이드에 해당되는 UI 를 잠시라도 보여주지 않기 위해 currentRide 의 업데이트는 하지 않는다.
+      if (forwardRide != null) {
+          dataStore.forwardRide.value = forwardRide
+          return
+      } else if (alreadyDeniedPendingRide) {
+          // 수락을 기다리는 상태의 Ride 가 api 상에서 들어오더라도
+          // 이미 수락을 거절한 상태라면, currentRide 업데이트를 하지 않는다.
+          if (ride.status == RideStatus.PENDING) {
+              dataStore.currentRide.clear()
+              return
           }
       }
   }
-  // ...
+  dataStore.currentRide.value = ride
 }
 ```
 
