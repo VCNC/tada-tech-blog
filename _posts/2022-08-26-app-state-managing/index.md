@@ -279,19 +279,21 @@ class MinimalLoggerMiddleware {
 일반적인 HTTP API 호출의 시작/종료 시점에 락을 잡고 여는 액션을 추가하여 Update 를 호출 중 지연시키는 Middleware 를 만들었습니다.
 
 ```kotlin
+// 실제 Fetch Request & Response 간의 쌍을 맞추어 Lock / Unlock 하거나 
+// Dispatch 되지 못한 message 를 쌓아두는 세부 구현을 제외한 단순한 구현체입니다.
 class MinimalBlockActionWhileFetching : DriverStateMachine.Middleware {
-    // 실제로는 복수의 fetch 요청에 대한 페어링 등이 추가되어 있습니다.
-    private val isFetchingRequest = AtomicBoolean(false)
+
+    private var isFetchingRequest = false
 
     override fun create(next: (DriverStateMachine.Action) -> DriverStateMachine.State): (DriverStateMachine.Action) -> DriverStateMachine.State {
         return { action ->
             when {
                 action is DriverStateMachine.Action.FetchingStarted -> {
-                    isFetchingRequest.set(true)
+                    isFetchingRequest = true
                     next(action)
                 }
                 action is DriverStateMachine.Action.FetchingFinished -> {
-                    isFetchingRequest.set(false)
+                    isFetchingRequest = false
                     next(action)
                 }
                 isFetchingRequest.get() -> prevState
