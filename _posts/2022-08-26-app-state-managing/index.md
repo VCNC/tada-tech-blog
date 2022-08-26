@@ -165,16 +165,22 @@ CS로 인입되는 버그 상황 중 일부는 앱 상태관리와 관련된 버
 
 ## 2. 안정적이고, 확장에 유리한 모듈로 개선하자
 
-타다 팀에서 다양한 기술 스택을 오고 가며 WebFrontend 에서 사용하는 Redux 를 자주 접해보게 되었고, Redux 사용하며 타다 드라이버 앱의 상태관리에서 발생하는 문제점을 해결하는데 효과적이라고 느껴지는 부분들이 많았습니다.
+책임의 분리 및, 확장에 용이한 모듈을 고민하던 차에 [Redux] 를 접하게 되었습니다.
 
-- Flux 로 대변되는 State Mutation(Action), State Subscription 의 개념은 기존 부터 MVVM + RxJava 로 익숙한 사용성이다.
+![Redux Diagram]()
+
+[Redux] 는 상태관리를 담당하는 javascript 생태계의 라이브러리로 단방향 데이터 흐름으로 상태를 변경 & 구독하며, Action 처리에 대한 Middleware 를 제공하는 라이브러리이며 프로그래밍 스타일이라고 요약할 수 있습니다. (대략적인 개념은 안드로이드, iOS 생태계의 MVI Architecture 와 유사하다고 볼 수 있습니다.)
+
+개인적인 흥미로 타다 WebFrontend 팀에서 Redux 를 사용한 프로젝트를 진행하며 Redux 의 장/단을 체감할 수 있었고 이 중에는 타다 드라이버 앱의 상태관리에서 발생하는 문제점을 해결하는데 효과적이라고 느껴지는 부분들이 많았습니다.
+
+- State Mutation(Action), State Subscription 등 Redux 의 단방향 데이터 흐름 개념은 기존 부터 MVVM + RxJava 로 익숙한 사용성이다. 
 - Action 과 State 에 대한 Middleware 의 도입을 통해 관점 중심의 개발을 할 수 있다.
 - 중앙집중화된 상태관리를 제공하여 이와 궁합이 잘 맞는 커다란 State Tree 를 가지는 프로덕트 요구사항에서 Fit 이 잘 맞는다.
 
-위와 같은 장점을 고려하며 Redux 로 우리의 니즈를 해결하는데 큰 도움이 될 수 있을 것이라 판단하였고 Redux 를 바탕으로 상태관리를 담당하는 이하 `StateMachine` 을 만들기 시작하였습니다.
+위와 같은 장점을 고려하며 (특히나 Middleware 컴포넌트의 존재) Redux 로 우리의 니즈를 해결하는데 큰 도움이 될 수 있을 것이라 판단하였고 Redux 를 모티브로 상태관리를 담당하는 이하 `StateMachine` 을 만들기 시작하였습니다.
 
-> 최초에는 finate-state-machine 의 형태로 좀 더 상태간의 관계를 잘 모델링하는 상태관리를 고려하고 있었기에 StateMachine 이라는 이름이 붙게 되었습니다.
-> 하지만, 당장은 finate-state-machine 스러운 모듈을 통한 이점보다는 빠른 구현체를 만드는데 중점을 두어 현재와 같은 Redux style 의 StateMachine 이 탄생하게 되었습니다.
+> 최초에는 [finite-state machine] 의 형태로 좀 더 상태간의 관계를 잘 모델링하는 상태관리를 고려하고 있었기에 StateMachine 이라는 이름이 붙게 되었습니다.
+> 하지만, 당장은 [finite-state machine] 스러운 모듈을 통한 이점보다는 빠른 구현체를 만드는데 중점을 두어 현재와 같은 Redux style 의 StateMachine 이 탄생하게 되었습니다.
 
 ```kotlin
 interface StateMachine {
@@ -194,6 +200,8 @@ interface Middleware {
 Redux 의 간단한 매커니즘을 카피하여 유사한 인터페이스를 구축하고 실제 내용물을 구현하기 시작했습니다.
 
 ```kotlin
+// 실제 구현된 StateMachineImpl 의 동시성 처리 등의 디테일을 생략하고
+// 이해를 돕기 위해 만든 간단한 구현체 입니다.
 class MinimalStateMachineImpl {
   private val _state = MutableDataStream()
   override val state = _state.toDataStream()
@@ -201,7 +209,6 @@ class MinimalStateMachineImpl {
   private val combinedReducer: Reducer // 주입 생략
   private val middlewares: List<Middleware> // 주입 생략
 
-  @Synchronized
   override dispatch(action: Action) {
     val prevState = _state.value
     val nextStateGenerator = middlewares.fold(
@@ -307,16 +314,17 @@ class MinimalBlockActionWhileFetching : DriverStateMachine.Middleware {
 }
 ```
 
-#### Flipper Middleware
-
-![Flipper preview]()
+#### `Flipper Middleware`
 
 또한 기존 의도한 기획은 아니지만, 디버깅 시에 단순한 State, Action 의 로깅이 아닌
+
 - State 의 diff 를 비교하거나
 - 순서대로 dispatch 된 Action 을 확인하거나
 - 임의로 action 을 dispatch 할 수 있는
 
 간단한 시각화 툴을 만들어 보고 싶었습니다 (마치 [Redux DevTools] 같은)
+
+![Flipper preview]()
 
 그 과정에서 모바일 플랫폼 디버깅 플랫폼인 [Flipper] 를 알게 되었고, 개인적인 흥미로 Flipper 를 위한 Plugin 을 제작하여 보았는데 생각보다 state 와 action 을 GUI 로 tracking 하고 디버깅하는 경험이 윤택해 져서 함께 소개드려봅니다.
 
@@ -357,37 +365,30 @@ fun `호출예약_이전_대기중_화면이_기존과_동일하게_보여진다
 ---
 ## 마무리
 
-타다 드라이버 안드로이드 코드베이스에서 발생하는 다양한 문제상황을 해결하기 위한 근본적인 해결책을 앱 내 상태 관리 개선으로 판단하고, 상태 관리 레이어 분리 / 상태 관리 방식 개선 / 실제 개선된 상태관리 방식으로 해결한 문제 상황들을 공유드렸습니다.
+타다 드라이버 안드로이드 코드베이스에서 발생하는 다양한 문제상황을 해결하기 위한 근본적인 해결책을 앱 내 상태 관리 개선으로 판단하고, 상태 관리 레이어 분리 / 상태 관리 방식 개선 / 실제 개선된 상태관리 방식으로 해결한 문제를 공유드렸습니다.
 
-<br/>
+문제 개선을 위해 많은 고민을 하였지만, 아직
 
-작업을 진행하며 실제 저희 안드로이드 코드베이스에서 발생하는 문제 상황 해결이라는 목적을 명확하게 파악하고, 집중하여 해결하는 과정이 즐거웠습니다.
-특히 그 과정에서, Redux 스타일의 상태관리를 좀 더 가까워 지고 체화 시킬 수 있었던 점도 큰 도움이 되었던 것 같습니다.
-
-<br/>
-
-문제 개선을 위해 많은 노력을 하고 있지만 아직,
 - test case 고도화
   - StateMachine Unit test 테스트 케이스 추가
   - 특정 State 일 때의 UI 스냅샷 테스트 진행
 - StateMachine 내부적으로 State 관리 / 구독하는 방식의 고도화
   - 상호 배타적인 상태를 명확하게 표현하기 위해 sealed class 활용하여, state 를 명확하게 바라볼 수 있게 하기
   - State 내의 반복적인 데이터에 대한 구독을 Selector 로 추출하기
-  - finite-state-machine 의 아이디어에서 유용하게 사용할 수 있는 부분을 리서치 해서 적용하기
 
-등의 백로그들이 남아있고, 하나하나 해결을 위해 노력 중입니다.
+등 StateMachine 을 도입하고 나서도 생겨나는 다양한 니즈를 해결하기 위해 끈임없이 고민하고 있습니다.
 
-<br/>
-
-위와 같이 문제 해결을 위한 기술적인 고민을 함께하고, 논리적인 판단을 바탕으로 함께 타다 클라이언트 앱을 개발하실 분을 찾고 있습니다.
-
-<br/>
+타다 클라이언트 팀은 이번 글에서 설명한 StateMachine 에 대한 고민들 뿐 아닌 프로덕트 안정성/생산성 고도화를 위해 다양한 기술적 고민을 하고 있습니다. 논리적인 판단을 바탕으로 문제 해결을 위한 솔루션을 함께 고민하실 분을 찾고 있으니 많은 관심 부탁드립니다!
 
 긴 글 읽어 주셔서 감사합니다 :)
 
+
+
 [gRPC]: https://grpc.io/
+[Redux]: https://ko.redux.js.org/introduction/getting-started/
 [RIBs]: https://blog-tech.tadatada.com/2019-05-08-tada-client-development
 [Plugin]: https://en.wikipedia.org/wiki/Plug-in_(computing)
 [Redux DevTools]: https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en
 [Flipper]: https://fbflipper.com/
 [UI Snapshot Test]: https://jestjs.io/docs/snapshot-testing
+[finite-state machine]: https://en.wikipedia.org/wiki/Finite-state_machine
