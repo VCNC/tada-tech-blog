@@ -13,6 +13,8 @@ tags: ['android', 'redux', 'state']
 
 authors:
   - name: 'Jacob Kim'
+    comment: 다양한 분야에 대한 경험을 넓히는 것을 좋아하는 소프트웨어 개발자입니다.
+    profileImage: ./profile-image-jacob.png
     link: https://sanggggg.me/
 ---
 
@@ -152,6 +154,8 @@ CS로 인입되는 버그 상황 중 일부는 앱 상태관리와 관련된 버
 [Redux] 는 상태관리를 담당하는 javascript 생태계의 라이브러리로 단방향 데이터 흐름으로 상태를 변경 & 구독하며, Action 처리에 대한 Middleware 를 제공하는 라이브러리이며 프로그래밍 스타일이라고 요약할 수 있습니다. (대략적인 개념은 안드로이드, iOS 생태계의 MVI Architecture 와 유사하다고 볼 수 있습니다.)
 
 개인적인 흥미로 타다 WebFrontend 팀에서 Redux 를 사용한 프로젝트를 진행하며 Redux 의 /단을 체감할 수 있었고 이 중에는 타다 드라이버 앱의 상태관리에서 발생하는 문제점을 해결하는데 효과적이라고 느껴지는 부분들이 많았습니다.
+
+> WebFrontend 팀의 더 자세한 redux 사용기는 [여기](https://blog-tech.tadatada.com/2022-08-08-redux-again) 에서 확인하실 수 있습니다.
 
 - State Mutation(Action), State Subscription 등 Redux 의 단방향 데이터 흐름 개념은 기존 부터 MVVM + RxJava 로 익숙한 사용성이다. 
 - Action 과 State 에 대한 Middleware 의 도입을 통해 관점 중심의 개발을 할 수 있다.
