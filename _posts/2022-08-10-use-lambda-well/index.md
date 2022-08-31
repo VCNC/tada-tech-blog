@@ -58,11 +58,11 @@ authors:
 ![image2](./lambda-image-2.png)
 <figcaption>새로 고안한 구조</figcaption>
 
+새로 고안한 구조에서 아래와 같은 장점으로 인해 만장일치로 진행하기로 결정했습니다.
+
 - **S3 Trigger 기능을 활용하여 위 구조로 변경을 하여서 불필요하고, 부하가 큰 통신 과정을 축소할 수 있습니다.**
 - **Lambda를 활용하여 자원을 분리할 수 있습니다.**
 - **Spring Boot에서 구현을 하지 않아도 되어서 python code를 그대로 가지고 올 수 있습니다.**
-
-위와 같은 장점으로 인해 만장일치로 진행하기로 결정했습니다.
 
 ## 전개
 
@@ -90,7 +90,7 @@ def split_upload_file(writePageName, splitStart, splitEnd):
 
 ## 위기
 
-QR코드 인식을 위해서 [pyzbar](https://pypi.org/project/pyzbar/)를 Lib Layer로 추가하려고 했는데 문제가 생겼습니다. Shared Library인 [zbar](http://zbar.sourceforge.net/)를 설치를 해야 했는데 Shared Library는 Layer로 추가해도 pyzbar에서 읽기가 불가능했고 Docker 이미지를 만들어야 했습니다. (Lambda에서 Sharing Layer 추가 [가이드 문서](https://aws.amazon.com/premiumsupport/knowledge-center/lambda-linux-binary-package/?nc1=h_ls) ) 그래서 이미지를 이용해서 Lambda를 만들기로 하였고 다시 DockerFile부터 만들기 시작했습니다.
+QR코드 인식을 위해서 [pyzbar](https://pypi.org/project/pyzbar/)를 Lib Layer로 추가하려고 했는데 문제가 생겼습니다. pyzbar는 [zbar](http://zbar.sourceforge.net/)라는 라이브러리를 활용해서 구현된 오픈소스이고 Window가 아닌 OS에서는 Shared Library인 zbar를 설치를 해야 합니다. 그런데 Lambda에 Lib Layer에는 Shared Library 추가하는거는 불가능했고 Docker 이미지를 만들어야 했습니다. (Lambda에서 Sharing Layer 추가 [가이드 문서](https://aws.amazon.com/premiumsupport/knowledge-center/lambda-linux-binary-package/?nc1=h_ls) ) 그래서 이미지를 이용해서 Lambda를 만들기로 하였고 다시 DockerFile부터 만들기 시작했습니다.
 
 ```DockerFile
 
