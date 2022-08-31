@@ -52,10 +52,17 @@ authors:
 - **PDF를 카테고리 별로 분리하고 사진에서 QR코드를 읽어들이는 기능은 자원을 많이 소모하기 때문에 분리된 환경에서 다뤄야 한다고 생각했습니다.**
 - **기존에 Colab에서 구현된 코드는 python이였고 이를 Java로 전환하는 데는 새로 코드를 짜야 했습니다.**
 
-Colab보다는 S3와 동일하게 AWS로 통일하는 게 좋다고 판단했고, 그러다 AWS에서 제공하는 [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제 코드에 착안해서 Lambda 및 S3 Trigger를 통해서 python으로 개발하자는 아이디어가 나왔고 만장일치로 진행하게 되었습니다.
+팀원중 한명이 AWS에서 제공하는 [Lambda Thumbnail](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-tutorial.html) 예제 코드에 착안해서 Lambda 및 S3 Trigger를 통해서 python으로 개발하자는 제안을 하였습니다.
+새로 고안한 구조는 아래의 그림과 같습니다.
 
 ![image2](./lambda-image-2.png)
 <figcaption>새로 고안한 구조</figcaption>
+
+- **S3 Trigger 기능을 활용하여 위 구조로 변경을 하여서 불필요하고, 부하가 큰 통신 과정을 축소할 수 있습니다.**
+- **Lambda를 활용하여 자원을 분리할 수 있습니다.**
+- **Spring Boot에서 구현을 하지 않아도 되어서 python code를 그대로 가지고 올 수 있습니다.**
+
+위와 같은 장점으로 인해 만장일치로 진행하기로 결정했습니다.
 
 ## 전개
 
