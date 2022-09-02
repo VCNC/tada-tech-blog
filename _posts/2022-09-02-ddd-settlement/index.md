@@ -13,8 +13,8 @@ tags: ['DDD', '정산', '리팩토링']
 
 authors:
   - name: 'Lauv Cho
-    profileImage: './profile-image-lauv.jpeg'
     comment: 성장에 목말라 있는 주니어 서버 개발자입니다.
+    profileImage: './profile-image-lauv.jpeg'
     link: https://github.com/ko-ing
 ---
 
