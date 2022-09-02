@@ -1,7 +1,7 @@
 ---
 layout: post
-date: 2022-08-12 10:00:00 +09:00
-permalink: /2022-08-12-use-lambda-well
+date: 2022-09-02 15:00:00 +09:00
+permalink: /2022-09-02-use-lambda-well
 
 title: '실전에서 AWS Lambda 적극 활용해본 이야기'
 thumbnail:
