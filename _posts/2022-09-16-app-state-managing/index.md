@@ -1,7 +1,7 @@
 ---
 layout: post
-date: 2022-08-26 10:00:00 +09:00
-permalink: /2022-08-26-app-state-managing
+date: 2022-09-16 10:00:00 +09:00
+permalink: /2022-09-16-app-state-managing
 
 title: '타다 드라이버 앱 상태관리 개선하기'
 thumbnail:
