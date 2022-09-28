@@ -34,7 +34,7 @@ authors:
 
 첫째, `도메인 지식과 코드의 복잡성`이 매우 높아 `기능을 추가하는 데에 큰 어려움`이 있었습니다. 정산 자동화 기능을 인터널 팀에서 개발을 진행하려고 했으나, 
 기능을 추가할 때 어떠한 문제가 생길지 가늠하기 어려웠습니다. <br />
-둘째, `도메인 전문가가 명확`했으며, 개발자와의 `커뮤니케이션에 어려움`을 느끼고 있었습니다. 정산 담당자 분들이 사용하는 언어와 개발자가 사용하는 언어가 달랐으며,
+둘째, `도메인 전문가가 명확`했지만, 개발자와의 `커뮤니케이션에 어려움`을 느끼고 있었습니다. 정산 담당자와 개발자가 사용하는 언어가 달랐으며,
 이해하고 있는 정산의 흐름 또한 달랐습니다. 
 
 위와 같은 이유로 모델 주도 설계를 적용하기에 적합하다고 판단했습니다. 
@@ -99,15 +99,7 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 따라서 `누가, 누구에게`를 기준으로 금액을 나누는 책임을 **단일한** 객체를 만들 필요가 있다고 생각했습니다.
 
 ## 새 모델 정의하기
-그래서 `누가 누구에게`얼마를 내야하는지를 정하는 객체를 중심으로 정산 도메인 모델을 다시 설계 했습니다.
-
-<div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
-  <div style="margin-left: 4px; max-width: 249px; width: 35% ;">
-    <img src="./settlement_model_new_flow.png" alt="new-model" />
-  </div>
-</div>
-<figcaption>새 모델의 전체 흐름</figcaption>
-
+그래서 `누가 누구에게`얼마를 내야하는지를 정하는 SettlementDistribution이라는 객체를 중심으로 정산 도메인 모델을 다시 설계 했습니다.
 주요 구성요소는 SettlementDivision과 SettlementDistribution입니다.
 
 ### 모델 구성요소 - SettlementDivision, SettlementDistribution
@@ -134,6 +126,18 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 `SettlementDistribution`은 핵심 데이터로서 `누가 누구`에게 얼마를 주어야하는지 정보를 가진 데이터입니다.
 `SettlementDistribution`을 통해 누가 누구에게 얼마를 주어야하는지 정산 대행사에 요청할 객체를 만듭니다.
 
+### 모델의 전체 흐름
+새 모델의 전체적인 그림은 다음과 같습니다.
+
+<div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
+  <div style="margin-left: 4px; max-width: 249px; width: 35% ;">
+    <img src="./settlement_model_new_flow.png" alt="new-model" />
+  </div>
+</div>
+<figcaption>새 모델의 전체 흐름</figcaption>
+
+흐름이 더 간결해지고 책임이 명확해진 것을 확인할 수 있습니다.
+
 ## 정산 전문가와 논의
 타다 서버팀은 DDD의 핵심이 모델을 중심으로 도메인 전문가와 개발자가 긴밀하게 협업하는 것이라고 생각했습니다. 
 그래서 서버팀만 알고 있는 모델을 만드는 것은 반쪽짜리 DDD라고 생각했고, 실제 정산 업무를 담당하시는 분들과 여러 번의 논의를 거치며 모델을 다듬어갔습니다.
@@ -145,7 +149,7 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 
 ### 사용하지 않으나 구현을 복잡하게 하는 것
 
-실제 정산 담당자분들이 사용하지 않고 개념상으로도 필요하지 않지만, 코드를 복잡하게 하는 것들을 확인하고 제거할 수 있었습니다.
+실제 정산 담당자들이 사용하지 않아 코드상에 필요 없는 개념들을 제거할 수 있었습니다. 이를 통해 코드의 복잡성을 더 줄일 수 있었습니다.
 
 `PaymentType`은 enum 값으로, 요금 항목에 대한 돈을 누가 내는지 나타내고 있었습니다. 해당 enum에는 `CARD`, `CASH`, `VCNC`의 세 항목이 있었습니다.
 
@@ -154,7 +158,7 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 
 두 문제는 엮여있는 문제였으며, 특히 두번째가 더 큰 문제를 야기했습니다. 같은 enum을 다른 의미를 사용하는 코드가 뒤엉켜 몇 번을 읽어야 이해가 되는 코드를 만들어냈습니다.
 
-두 의미를 한번에 내포해야 했던 이유는 이용자가 돈을 내지 않아 미수금이 발생할 경우 VCNC가 먼저 지불하고 나중에 이용자에게 돈을 받아야하기 때문입니다.
+두 의미를 한 enum이 한번에 가져야 했던 이유는 이용자가 돈을 내지 않아 미수금이 발생할 경우 VCNC가 먼저 지불하고 나중에 이용자에게 돈을 받아야하기 때문입니다.
 하지만 실제 정산 업무에서는 해당 `paymentType`을 통해 미수금 여부를 판단하지 **않고** 있다는 것을 알게 되었고, `paymentType`이 원래 청구된 대상을 기준을 고려할 필요가 없다는 결론을 내었습니다.
 그래서 단순히 `누가`의 의미를 나타내는 `paySourceType`으로 `paymentType`을 대체하여 코드의 복잡도를 훨씬 줄일 수 있었습니다.
 
