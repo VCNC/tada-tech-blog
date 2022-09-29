@@ -13,7 +13,7 @@ tags: ['DDD', 'MDD', 'OOP', '정산']
 
 authors:
   - name: 'Lauv Cho'
-    comment: 성장에 목말라 있는 주니어 서버 개발자입니다.
+    comment: 확장성 있는 설계에 관심이 있는주니어 서버 개발자입니다.
     profileImage: './profile-image-lauv.jpeg'
     link: https://github.com/ko-ing
 ---
