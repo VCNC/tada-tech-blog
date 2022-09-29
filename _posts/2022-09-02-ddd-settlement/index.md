@@ -84,8 +84,8 @@ authors:
 모델 주도 설계를 구현함에 있어 객체 지향이 적합하다고 생각했고, 책임과 역할으로부터 문제점을 도출해내었습니다.
 기존 모델의 구성요소 중 가장 중요한 객체인 SettlementEntry와 SettlementContract의 역할은 다음과 같습니다. <br/>
 ```text
-SettlementEntry: 요금 항목과 "누가"를 기준으로 나눈 요금
-SettlementContract: SettlementEntry를 통해 "누구에게"를 기준으로 나눈 요금
+SettlementEntry: 요금 항목과 "누가"를 기준으로 나눈 요금을 계산
+SettlementContract: SettlementEntry를 통해 "누구에게"를 기준으로 나눈 요금을 계산
 ```
 그렇다면 SettlementEntry과 SettlementContract의 역할을 나눌 필요가 있을까요?
 
@@ -149,7 +149,7 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 
 ### 사용하지 않으나 구현을 복잡하게 하는 것
 
-실제 정산 담당자들이 사용하지 않아 코드상에 필요 없는 개념들을 제거할 수 있었습니다. 이를 통해 코드의 복잡성을 더 줄일 수 있었습니다.
+실제 정산 담당자들이 사용하지 않아 코드상에 필요 없는 개념들을 제거하여 코드의 복잡성을 더 줄일 수 있었습니다.
 
 `PaymentType`은 enum 값으로, 요금 항목에 대한 돈을 누가 내는지 나타내고 있었습니다. 해당 enum에는 `CARD`, `CASH`, `VCNC`의 세 항목이 있었습니다.
 
@@ -167,14 +167,10 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 
 ## 새 모델을 통한 구현
 새 모델을 기준으로 정산 코드를 리팩토링하였고, 기존 구현과 새 구현을 비교해보려고 합니다.
-
-### 새 정산 메인 함수
 아래는 실제 타다 정산 코드의 일부입니다.
-위에서 살펴본 모델을 토대로 코드를 작성했기 때문에 `division으로 금액 나누기 -> distriubtion 기준으로 합치기 -> 정산 요청하기`의 주요 흐름이
-코드에서도 명확히 나타나는 것을 볼 수 있습니다.
 
-150줄 가량 되던 메인 함수를 20줄 정도로 줄일 수 있었으며 
-각 객체의 책임이 명확하여 가독성, 확장성, 응집성 등 모든 부분에서 개선이 되었음을 확인할 수 있었습니다.  
+### 새 정산 메인 함수 VS 기존 정산 메인 함수
+**새 메인 함수**
 
 ```kotlin
 fun settle(ride: Ride, ...) {
@@ -190,15 +186,113 @@ fun settle(ride: Ride, ...) {
 }
 ```
 
-### 기존 정산 메인 함수
-<div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; width: 100%">
-  <div style="max-width: 249px; width: 50%;">
-    <img src="./previous-code.png" alt="previous-code" />
-  </div>
-</div>
-<figcaption>기존 코드</figcaption>
+새 정산 메인 함수를 위에서 살펴본 모델을 토대로 코드를 작성했기 때문에 
+`division으로 금액 나누기 -> distriubtion 기준으로 합치기 -> 정산 요청하기`의 주요 흐름이
+코드에서도 명확히 나타나는 것을 볼 수 있습니다.
 
-기존 코드를 보면 개선된 점을 더 명확히 확인할 수 있습니다.
+리팩토링을 통해 150줄 가량 되던 메인 함수를 20줄 정도로 줄일 수 있었으며
+각 객체의 책임이 명확하여 가독성, 응집성, 결합도 등 모든 부분에서 개선이 되었습니다.
+
+**기존 메인 함수**
+
+
+```kotlin
+fun settle(ride: Ride?, ...) {
+    ...
+    val settlementAgency = when {
+        ...
+    }
+       ...
+    val entries = getSettlementEntries(ride, ...)
+    ...
+    val (settlementContract, ASettlementRecord, ...) = when (settlementAgency) {
+        // 정산 대행사에 따라 처리
+        TaxiSettlementAgency.A -> {
+            val settlementContract = ASettlementContract(entries, ...)
+            val record = AService.settle(...)
+            Triple(settlementContract, record, null)
+        }
+        ...
+    }
+    ...
+}
+```
+
+기존 정산 메인 함수를 보면 `SettlementEntries -> SettlementContract`의 흐름을 확인할 수 있습니다.
+SettlementEntries와 SettlementContract의 책임이 명확하지 않은 것을 제외하고,
+구현에서 가장 큰 문제는 SettlementContract가 사용되는 깊이가 너무 깊다는 것입니다. 
+높은 결합도는 변경에 취약한 구조를 만들었습니다.
+
+아래의 세부 구현을 통해 더 살펴보겠습니다.
+
+### 기존 구현 - 낮은 응집도와 높은 결합도
+아래는 정산대행사 A의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`
+흐름의 각 함수의 일부입니다. SettlementContract가 정산 메인 함수에서 SettlementDetail을 만드는 곳까지 **네 함수**에 걸쳐 인자로 넘어가는 것을 알 수 있습니다.
+
+```kotlin
+fun settle(ride: Ride?, ..., settlementContract: ASettlementContract): ASettlementRecord? {
+    ...
+    val settlementRecord = createSettlementRecord(ride, ...)
+        ...
+        sendSettlementRecord(settlementRecord).subscribe()
+        ...
+    return settlementRecord
+}
+```
+
+```kotlin
+private fun createSettlementRecord(ride: Ride?, ..., settlementContract: ASettlementContract): ASettlementRecord {
+    ...
+    val (driverSettlementDetail, vcncSettlementDetail) 
+        = getSettlementDetailPair(settlementContract, ...)
+    ...
+    val details = ASettlementDetails(
+        ...,
+        driverSettlementDetail = driverSettlementDetail,
+        vcncSettlementDetail = vcncSettlementDetail,
+        ...
+    )
+    ...
+    val settlementRecord = ASettlementRecord(..., details, ...)
+    ...
+}
+```
+
+```kotlin
+private fun getSettlementDetailPair(settlementContract: ASettlementContract, ...): Pair<ASettlementDetail?, ASettlementDetail?> {
+    val payAmountVcncContribution = settlementContract.getPayAmount(...)
+    ...
+    val driverSettlementDetail = ASettlementDetail(
+         ..., payAmountVcncContribution, ...
+    )
+    ...
+}
+```
+
+따라서 SettlementContract와 SettlementEntry에 변경사항이 생길 경우 네 함수를 모두 확인하고 수정해야하는 문제가 있었으며,
+어떤 곳에서 어떤 것을 고쳐야할지 파악하기 어려웠습니다.
+
+### 새 구현 - 높은 응집도와 낮은 결합도
+새 구현에서는 SettlementDistribution을
+`SettlementDivision.toDistribution()`의 **Factory 메서드**를 통해 생성하기 때문에, 깊이가 얕아지고
+기존의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 연산을
+해당 메서드에서 잘 캡슐화하고 있음을 알 수 있습니다.
+
+금액을 나누는 것에 대한 수정사항은 SettlementDivisionService.getSettlementDivision()을, 
+다시 합치는 것은 SettlementDivision.toDistribution()을 수정하면 되므로 응집도와 결합도에서도 개선이 되어 변경에도 대응이 용이해졌습니다.
+```kotlin
+fun settle(ride: Ride, ...) {
+    val settlementAgency = TaxiSettlementAgency.get(ride)
+    ...
+    val divisions = divisionService.getSettlementDivision(ride, payment)
+    val distributions = divisions.toDistribution()
+    ...
+    when (settlementAgency) {
+        TaxiSettlementAgency.A -> AService.settleRide(distributions, ...)
+            ... // 정산 대행사에 따라 요청
+    }
+}
+```
 
 ## 결론
 이번 프로젝트를 통해 `구현-모델-설계` 사이의 기민함을 유지하는 것이 매우 중요하다는 것을 깨달았으며,
