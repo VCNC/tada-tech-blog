@@ -21,11 +21,12 @@ authors:
 ## 도메인 정리의 시작과 정산
 
 ### 도메인 정리를 시작하게 된 이유
-리뷰 관련 코드를 고치려다가 운행 관련 코드까지 고쳐야하는 상황처럼, 한 도메인의 변경 사항이 다른 도메인까지 영향을 미치는 경험을 
-독자분들도 하신 적이 있을 것 같습니다. <br/>
-타다 서버팀은 최근 이러한 도메인 간의 강결합과 각 도메인 내부의 복잡성 때문에 겪는 생산성과 확장성 저하를 큰 문제라고 생각하고 있었습니다. <br/> 
-비지니스가 확장함에 따라 더 큰 문제가 되기 이전에 도메인을 정리하고 다듬는 작업이 필요하다고 생각하였고, 
-에릭 에반스의 도메인 주도 설계(이하 DDD) 스터디를 시작으로 프로젝트를 진행해 나아갔습니다.
+리뷰 관련 코드를 고치려다가 주문 관련 코드까지 고쳐야 하고 주문 관련 코드를 고치다가 사용자 관련 코드까지 고쳐야하는 상황, 
+서로 다른 종류의 코드가 서로 강하게 결합되어 있다면 이와 같은 상황을 자주 접해보셨을 수 있습니다.
+
+높은 코드 복잡도는 앞선 사례와 같이 코드 생산성 감소로 이어지고, 결국 빠른 비즈니스 성장에 방해가 될 수 있습니다.
+이번 글에서는 타다 서버 레포지토리 내에 존재하는 코드 복잡도를 해결하기 위해 
+[도메인 주도 설계](https://en.wikipedia.org/wiki/Domain-driven_design)를 바탕으로 진행한 리팩토링을 공유해보려고 합니다.
 
 ### 도메인 주도 설계와 모델 주도 설계
 먼저 타다팀에서의 진행 과정 이전에 도메인 주도 설계와 모델 주도 설계가 무엇인지 살펴보겠습니다.
@@ -40,19 +41,21 @@ authors:
 보통 도메인의 복잡도가 코드 구현의 복잡도를 올리는 이유가 되기 때문에 도메인 주도 설계를 도입합니다.
 도메인 복잡도를 기획자/설계자와 개발자가 긴밀하게 해결하기 위해서는 모델을 기준으로 기획/설계와 개발을 수정하고 발전시켜 나아가야 합니다.
 
+타다 서버팀은 모든 도메인 결합을 한 번에 해결하는 것은 어렵다고 생각했기 때문에, 비교적 경계와 문제점이 명확한 **정산**을 첫 도메인으로 선택했습니다.
+
 ### 왜 정산 도메인부터 시작했을까
-DDD를 스터디하면서 여러 도메인 간의 강결합을 한 번에 해결하기에는 너무나도 큰 문제라고 생각했기 때문에, 
-경계가 비교적 명확한 정산부터 정리해나아가고 있습니다.
-정산은 결제된 금액을 드라이버와 VCNC에 분배하는 과정입니다. 
+정산을 DDD와 MDD를 적용하는 첫 도메인으로 정한 이유는 크게 세 가지입니다.
 
-정산을 DDD와 MDD를 적용하는 첫 도메인으로 정한 이유는 크게 두 가지입니다.
-
-첫째, `도메인 지식과 코드의 복잡성`이 매우 높아 `기능을 추가하는 데에 큰 어려움`이 있었습니다. 인터널 팀에서 정산을 자동화하고자 했으나, 
+첫째, 정산은 결제된 금액을 드라이버와 VCNC에 분배하는 과정입니다. 따라서 정산은 서비스 `흐름의 마지막`에 존재하며, 다른 도메인과의 `결합도가 비교적 낮습니다`. <br/>
+둘째, `도메인 지식과 코드의 복잡성`이 매우 높아 `기능을 추가하는 데에 큰 어려움`이 있었습니다. 인터널 팀에서 정산을 자동화하고자 했으나, 
 기능을 추가할 때 어떠한 문제가 생길지 가늠하기 어려웠습니다. <br />
-둘째, `도메인 전문가가 명확`했지만, 개발자와의 `커뮤니케이션에 어려움`을 느끼고 있었습니다. 정산 담당자와 개발자가 사용하는 언어는 같았지만 그 의미가 달랐으며,
+셋째, `도메인 전문가가 명확`했지만, 개발자와의 `커뮤니케이션에 어려움`을 느끼고 있었습니다. 정산 담당자와 개발자가 사용하는 언어는 같았지만 그 의미가 달랐으며,
 이해하고 있는 정산의 흐름 또한 달랐습니다.
 
-이 글에서는 정산 도메인의 모델을 정의하고 도메인 전문가분들과 모델을 다듬는 과정, 그리고 모델을 바탕으로 구현한 코드까지 살펴볼 예정입니다.
+앞으로 이 글에서는 두번째와 세번째 이유에 집중하여 아래 순서대로 프로젝트를 살펴보려고 합니다. 
+1. 정산 도메인 지식 및 기존 구현의 문제점
+2. 정산 도메인의 모델을 정의하고 도메인 전문가분들과 모델을 다듬는 과정
+3. 모델을 바탕으로 구현한 코드
 
 ## 기존 정산 도메인 파악하기
 ### 도메인 지식 및 구현 파악하기
@@ -115,7 +118,7 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 결론적으로 `누가, 누구에게`를 기준으로 금액을 나누는 책임을 가진 **단일한** 객체를 만들 필요가 있다고 생각했습니다.
 
 ## 새 모델 정의하기
-그래서 `누가 누구에게` 얼마를 내야하는지를 정하는 SettlementDistribution이라는 객체를 중심으로 정산 도메인 모델을 다시 설계 했습니다.
+그래서 `누가 누구에게` 얼마를 내야하는지를 정하는 **SettlementDistribution**이라는 객체를 중심으로 정산 도메인 모델을 다시 설계 했습니다.
 주요 구성요소는 SettlementDivision과 SettlementDistribution입니다.
 
 ### 모델 구성요소 - SettlementDivision, SettlementDistribution
@@ -129,7 +132,7 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 
 `SettlementDistribution`을 만들기 이전에 우리가 알고 있는 정보는 유저와 VCNC가 내야하는 총 요금, 각 요금 항목마다
 플랫폼 수수료 비율 등의 정보입니다. 계산에 사용되는 값들이 종류마다 다르기 때문에 이 정보들로 바로 `SettlementDistribution`을 생성하기에는
-구현의 복잡도가 매우 올라갈 것으로 예상되었습니다. 요금 항목, 누가, 누구에게의 세 기준으로 나눈 금액인 `SettlementDivision`을 계산하고,
+구현의 복잡도가 매우 올라갈 것으로 예상되었습니다. `요금 항목`, `누가`, `누구에게`의 세 기준으로 나눈 금액인 `SettlementDivision`을 계산하고,
 다시 합치는 방식으로 `SettlementDistribution`을 도출하기로 했습니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
@@ -181,36 +184,10 @@ SettlementEntry와 SettlementContract는 연산의 중간 산물임에도 불구
 이와 같이 정산 담당자분들과 몇 차례의 논의를 거쳐 모델을 수정하고 해당 모델을 기준으로 코드를 구현했습니다.
 
 ## 새 모델을 통한 구현
-새 모델을 기준으로 정산 코드를 리팩토링하였고, 기존 구현과 새 구현을 비교해보려고 합니다.
-아래는 실제 타다 정산 코드의 일부입니다.
+이제 기존 구현과 새 구현을 비교하며 어떤 개선점이 있었는지 살펴보겠습니다. 아래는 실제 타다 정산 코드의 일부입니다.
 
-### 새 정산 메인 함수 VS 기존 정산 메인 함수
-**새 메인 함수**
-
-```kotlin
-fun settle(ride: Ride, ...) {
-    val settlementAgency = TaxiSettlementAgency.get(ride)
-    ...
-    val divisions = divisionService.getSettlementDivision(ride, payment)
-    val distributions = divisions.toDistribution()
-    ...
-    when (settlementAgency) {
-        TaxiSettlementAgency.A -> AService.settleRide(distributions, ...)
-        ... // 정산 대행사에 따라 요청
-    }
-}
-```
-
-새 정산 메인 함수를 위에서 살펴본 모델을 토대로 코드를 작성했기 때문에 
-`division으로 금액 나누기 -> distriubtion 기준으로 합치기 -> 정산 요청하기`의 주요 흐름이
-코드에서도 명확히 나타나는 것을 볼 수 있습니다.
-
-리팩토링을 통해 150줄 가량 되던 메인 함수를 20줄 정도로 줄일 수 있었으며
-각 객체의 책임이 명확하여 가독성, 응집성, 결합도 등 모든 부분에서 개선이 되었습니다.
-
+### 기존 정산 메인 함수 VS 새 정산 메인 함수
 **기존 메인 함수**
-
-
 ```kotlin
 fun settle(ride: Ride?, ...) {
     ...
@@ -232,18 +209,38 @@ fun settle(ride: Ride?, ...) {
     ...
 }
 ```
-
 기존 정산 메인 함수를 보면 `SettlementEntries -> SettlementContract`의 흐름을 확인할 수 있습니다.
-SettlementEntries와 SettlementContract의 책임이 명확하지 않은 것을 제외하고,
-구현에서 가장 큰 문제는 SettlementContract가 사용되는 깊이가 너무 깊다는 것입니다. 
-높은 결합도는 변경에 취약한 구조를 만들었습니다.
+여러 타입에 대한 정산 분기, 정산과 관련 없는 데이터를 가져오는 것, 정산대행사에 따른 분기 등 너무 많은 요소가 한 함수에 있었습니다.
 
-아래의 세부 구현을 통해 더 살펴보겠습니다.
+또한, SettlementEntries와 SettlementContract의 책임이 명확하지 않기 때문에 SettlementContract가 매우 많은 함수를 걸쳐 사용되고 있었습니다.
+해당 문제는 정산대행사 관련 함수를 살펴보며 다시 다루겠습니다.
 
-### 기존 구현 - 낮은 응집도와 높은 결합도
-아래는 정산대행사 A의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`
-흐름의 각 함수의 일부입니다. SettlementContract가 정산 메인 함수에서 SettlementDetail을 만드는 곳까지 **네 함수**에 걸쳐 인자로 넘어가는 것을 알 수 있습니다.
+**새 메인 함수**
 
+```kotlin
+fun settle(ride: Ride, ...) {
+    val settlementAgency = TaxiSettlementAgency.get(ride)
+    ...
+    val divisions = divisionService.getSettlementDivision(ride, payment)
+    val distributions = divisions.toDistribution()
+    ...
+    when (settlementAgency) {
+        TaxiSettlementAgency.A -> AService.settleRide(distributions, ...)
+        ... // 정산 대행사에 따라 요청
+    }
+}
+```
+새 정산 메인 함수를 위에서 살펴본 모델을 토대로 코드를 작성했기 때문에 
+`division으로 금액 나누기 -> distriubtion 기준으로 합치기 -> 정산 요청하기`의 주요 흐름이
+코드에서도 명확히 나타나는 것을 볼 수 있습니다.
+
+리팩토링을 통해 `150`줄 가량 되던 메인 함수를 `20`줄 정도로 줄일 수 있었으며
+각 객체의 책임이 명확하여 가독성, 응집성, 결합도가 개선이 되었습니다.
+
+### 기존 정산대행사 관련 함수 VS 새 정산대행사 관련 함수
+정산대행사에 따라 다른 방식으로 정산 요청을 보내야하기 때문에 세부 구현이 달라집니다. 메인 함수 이후 정산대행사 A에 요청을 보내는 코드를 살펴봅시다. 
+
+**기존 구현 - 낮은 응집도와 높은 결합도**
 ```kotlin
 fun settle(ride: Ride?, ..., settlementContract: ASettlementContract): ASettlementRecord? {
     ...
@@ -283,39 +280,53 @@ private fun getSettlementDetailPair(settlementContract: ASettlementContract, ...
     ...
 }
 ```
+위는 정산대행사 A의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`
+흐름의 각 함수의 일부입니다. SettlementContract가 정산 메인 함수에서 SettlementDetail을 만드는 곳까지 **네 함수**에 걸쳐 인자로 넘어가는 것을 알 수 있습니다.
+위의 코드에 나타나지 않은 데이터까지 `ASettlementContract`, `SettlementDetail`, `SettlementRecord`, `SendSettlementInfoParams` 등이 연관 되어 있기 때문에
+관련 변경사항이 생길 경우 네 함수와 해당 데이터 모두를 확인하고 수정해야하는 문제가 있었습니다.
 
-따라서 SettlementContract와 SettlementEntry에 변경사항이 생길 경우 네 함수를 모두 확인하고 수정해야하는 문제가 있었으며,
-어떤 곳에서 어떤 것을 고쳐야할지 파악하기 어려웠습니다.
+정산 대행사마다 SettlementContract 등의 데이터가 따로 존재했습니다. 따라서 
 
-### 새 구현 - 높은 응집도와 낮은 결합도
+**새 구현 - 높은 응집도와 낮은 결합도**
+```kotlin
+fun settleRide(distribution: SettlementDistribution, ...) {
+    val ASettlementRequests = distribution.toASettlementParams(...)
+
+    ...
+    
+    tmoneyOutboundAdapter.request(ASettlementRequests, ...)
+}
+```
+
+```kotlin
+fun toASettlementParams(...): List<SendSettlementInfoParams> {
+    val details = distributions
+        ...
+        .map { (target, distributions) ->
+            target to distributions.toPayDetails(...)
+        }
+        ...
+    return receiverLicenses.licenses.map { 
+        ...
+        SendSettlementInfoParams(this, details, ...)
+    }
+}
+```
+
 새 구현에서는 SettlementDistribution을
 `SettlementDivision.toDistribution()`의 **Factory 메서드**를 통해 생성하기 때문에, 깊이가 얕아지고
 기존의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 연산을
 해당 메서드에서 잘 캡슐화하고 있음을 알 수 있습니다.
 
-금액을 나누는 것에 대한 수정사항은 SettlementDivisionService.getSettlementDivision()을, 
+금액을 나누는 것에 대한 수정사항은 SettlementDivisionService.getSettlementDivision()을,
 다시 합치는 것은 SettlementDivision.toDistribution()을 수정하면 되므로 응집도와 결합도에서도 개선이 되어 변경에도 대응이 용이해졌습니다.
-```kotlin
-fun settle(ride: Ride, ...) {
-    val settlementAgency = TaxiSettlementAgency.get(ride)
-    ...
-    val divisions = divisionService.getSettlementDivision(ride, payment)
-    val distributions = divisions.toDistribution()
-    ...
-    when (settlementAgency) {
-        TaxiSettlementAgency.A -> AService.settleRide(distributions, ...)
-            ... // 정산 대행사에 따라 요청
-    }
-}
-```
 
 ## 결론
-이번 프로젝트를 통해 `구현-모델-설계` 사이의 기민함을 유지하는 것이 매우 중요하다는 것을 깨달았으며,
-업무 담당자와 개발자 사이의 긴밀한 협력이 바탕이 되어야함을 느꼈습니다.
-
 파악하기 어려운 도메인 지식, 모델을 기준으로 구현하기 어려운 부분, 그리고 관련 호환성을 챙기는 것까지 
-정산에 도메인 주도 설계를 적용하는 데에 어려운 난관들이 많았습니다. 하지만, 현재까지 정합성 오류 0건일 정도의 안정성에 더해
-가독성, 확장성, 유지보수성까지 거의 모든 부분에서 개선이 있었다고 자부할만큼 좋은 결과가 있었습니다. 
-DDD와 MDD를 단순히 글로 공부하는 것이 아닌, 실제로 시행하면서도 배운 것이 많아 뜻 깊은 프로젝트가 되고 있습니다. 
+정산에 도메인 주도 설계를 적용하는 데에 어려운 난관들이 많았습니다. 
+하지만, 현재까지 정합성 오류 0건일 정도로 성공적으로 프로젝트를 진행하고 있습니다.
+특히 가독성과 확장성의 큰 개선은 앞으로 정산 도메인의 유지보수에, 
+공통 모델 정의은 도메인 전문가와의 긴밀한 의사소통에 매우 도움이 될 것으로 기대하고 있습니다.
+개인적으로도 DDD와 MDD를 단순히 글로 공부하는 것이 아닌, 실제로 시행하면서 깨닫는 것이 많아 뜻깊은 프로젝트가 되고 있습니다. 
 
 도메인 내부를 정리하는 것 다음으로는 도메인 간의 강결합을 풀고 도메인 자체를 정의하는 것을 목표로 하고 있습니다.
