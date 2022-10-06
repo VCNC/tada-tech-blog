@@ -126,7 +126,7 @@ SettlementDetails라는 새로운 객체를 만들어 처리하고 있습니다.
 
 ## 새 모델 정의하기
 그래서 `누가 누구에게` 얼마를 내야하는지를 정하는 **SettlementDistribution**이라는 객체를 중심으로 정산 도메인 모델을 다시 설계 했습니다.
-주요 구성요소는 SettlementDivision과 SettlementDistribution입니다.
+모델의 주요 구성요소는 SettlementDivision과 SettlementDistribution입니다.
 
 ### 모델 구성요소 - SettlementDivision, SettlementDistribution
 
@@ -137,10 +137,10 @@ SettlementDetails라는 새로운 객체를 만들어 처리하고 있습니다.
 </div>
 <figcaption>새 모델의 SettlementDivision</figcaption>
 
-`SettlementDistribution`을 만들기 이전에 우리가 알고 있는 정보는 유저와 VCNC가 내야하는 총 요금, 각 요금 항목마다
-플랫폼 수수료 비율 등의 정보입니다. 계산에 사용되는 값들이 종류마다 다르기 때문에 이 정보들로 바로 `SettlementDistribution`을 생성하기에는
-구현의 복잡도가 매우 올라갈 것으로 예상되었습니다. `요금 항목`, `누가`, `누구에게`의 세 기준으로 나눈 금액인 `SettlementDivision`을 계산하고,
-다시 합치는 방식으로 `SettlementDistribution`을 도출하기로 했습니다.
+SettlementDistribution을 만들기 이전에 우리가 알고 있는 정보는 유저와 VCNC가 내야하는 총 요금, 각 요금 항목마다
+플랫폼 수수료 비율 등의 정보입니다. <br/>
+해당 데이터로 SettlementDistribution을 만들기는 어렵기 때문에
+`요금 항목`, `누가`, `누구에게`의 세 기준으로 나눈 금액인 **SettlementDivision**을 계산하고, 다시 합치는 방식으로 SettlementDistribution을 도출하기로 했습니다.
 
 <div style="margin-top: 10px; display: flex; justify-content: center; width: 100%">
   <div style="margin-left: 4px; max-width: 500px; width: 100%;">
@@ -149,8 +149,8 @@ SettlementDetails라는 새로운 객체를 만들어 처리하고 있습니다.
 </div>
 <figcaption>새 모델의 SettlementDistribution</figcaption>
 
-`SettlementDistribution`은 핵심 데이터로서 `누가 누구`에게 얼마를 주어야하는지 정보를 가진 데이터입니다.
-`SettlementDistribution`을 통해 누가 누구에게 얼마를 주어야하는지 정산 대행사에 요청할 객체를 만듭니다.
+**SettlementDistribution**은 핵심 데이터로서 `누가 누구`에게 얼마를 주어야하는지 정보를 가진 데이터입니다.
+SettlementDistribution을 통해 누가 누구에게 얼마를 주어야하는지 정산 대행사에 요청할 객체를 만듭니다.
 
 <br/>
 
@@ -169,11 +169,11 @@ SettlementDetails라는 새로운 객체를 만들어 처리하고 있습니다.
 <br/>
 
 ## 정산 전문가와 논의
-타다 서버팀은 DDD의 핵심이 모델을 중심으로 도메인 전문가와 개발자가 긴밀하게 협업하는 것이라고 생각했습니다. 
-그래서 서버팀만 알고 있는 모델을 만드는 것은 반쪽짜리 DDD라고 생각했고, 실제 정산 업무를 담당하시는 분들과 여러 번의 논의를 거치며 모델을 다듬어갔습니다.
+MDD의 핵심이 모델을 통해 도메인 전문가와 개발자가 긴밀하게 협업하는 것이기라고 생각했기 때문에 
+실제 정산 업무를 담당하시는 분들과 여러 번의 논의를 거치며 모델을 다듬어갔습니다.
 
-논의가 진행됨에 따라 `division으로 금액 나누기 -> distriubtion 기준으로 합치기 -> 정산 요청하기`의 큰 흐름은 바뀌지 않았지만, 세부 구현에 있어 매우 많은
-인사이트를 얻을 수 있었습니다.
+논의가 진행됨에 따라 `division으로 금액 나누기 -> distriubtion 기준으로 합치기 -> 정산 요청하기`의 큰 흐름은 바뀌지 않았지만, 세부 설계에 많은
+개선점이 있었습니다.
 
 논의 과정에서 파악한 문제 중 하나를 살펴보려고 합니다.
 
@@ -185,16 +185,13 @@ SettlementDetails라는 새로운 객체를 만들어 처리하고 있습니다.
 
 `PaymentType`은 enum 값으로, 요금 항목에 대한 돈을 누가 내는지 나타내고 있었습니다. 해당 enum에는 `CARD`, `CASH`, `VCNC`의 세 항목이 있었습니다.
 
-이 enum에는 두 가지 문제가 있었습니다. 첫째, `이름이 모호`합니다. CASH는 유저가 내야하지만 내지 않아 VCNC의 예치금에서 빠져나가는 미수금을 가리키고 있었습니다. PaymentType.CASH라는 이름으로
-이것을 유추하기는 불가능합니다. 둘째, 이 enum은 단순히 누가를 가리키는 것이 아니라, 청구된 대상과 실제 돈을 내는 대상을 합친 `복합적인 의미`를 갖고 있습니다. </br>
+이 enum은 단순히 누가를 가리키는 것이 아니라, 요금이 청구된 대상과 실제 돈을 내는 대상을 합친 `복합적인 의미`를 갖고 있습니다. </br>
+예를 들어 PaymentType.CASH는 사용자가 내야하는 돈이지만 결제가 실패하여 VCNC가 먼저 드라이버에게 내는 돈을 의미합니다.
 
-두 문제는 엮여있는 문제였으며, 특히 두번째가 더 큰 문제를 야기했습니다. 같은 enum을 다른 의미로 사용하는 코드가 뒤엉켜 몇 번을 읽어야 이해가 되는 코드를 만들어냈기 때문입니다.
-
-두 의미를 한 enum이 가져야 했던 이유는 미수금 때문이었습니다. 하지만 실제 정산 업무에서는 해당 `paymentType`을 통해 미수금 여부를 판단하지 **않고** 있다는 것을 알게 되었고,
+복합적 의미를 한 enum이 가져야 했던 이유는 미수금 때문이었습니다. 하지만 실제 정산 업무에서는 해당 `paymentType`을 통해 미수금 여부를 판단하지 **않고** 있다는 것을 알게 되었고,
 단순히 `누가`의 의미를 나타내는 `paySourceType`으로 `paymentType`을 대체하여 코드의 복잡도를 훨씬 줄일 수 있었습니다.
 
-이 예시를 통해 기획/설계 - 모델 - 구현이 매우 밀접하게 연관되어 있고, 구현상의 복잡도를 기획과 설계 단계에서 해결할 수 있다는 것을 깨달았습니다.
-이와 같이 정산 담당자분들과 몇 차례의 논의를 거쳐 모델을 수정하고 해당 모델을 기준으로 코드를 구현했습니다.
+도메인 전문가와 여러번의 논의를 거치며 기획/설계 - 모델 - 구현이 매우 밀접하게 연관되어 있어 구현상의 복잡도를 기획과 설계 단계에서 해결할 수 있다는 것을 깨달았습니다.
 
 ## 새 모델을 통한 구현
 이제 기존 구현과 새 구현을 비교하며 어떤 개선점이 있었는지 살펴보겠습니다. 아래는 실제 타다 정산 코드의 일부입니다.
@@ -293,12 +290,13 @@ private fun getSettlementDetailPair(settlementContract: ASettlementContract, ...
     ...
 }
 ```
-위는 정산대행사 A의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`
-흐름의 각 함수의 일부입니다. SettlementContract가 정산 메인 함수에서 SettlementDetail을 만드는 곳까지 **네 함수**에 걸쳐 인자로 넘어가는 것을 알 수 있습니다.
+위는 정산대행사 A의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 흐름으로,
+누가 누구에게 얼마를 지금해야하는지 도출하는 과정입니다. 
+SettlementContract가 정산 메인 함수에서 SettlementDetail을 만드는 곳까지 **네 함수**에 걸쳐 인자로 넘어가는 것을 알 수 있습니다.
 위의 코드에 나타나지 않은 데이터까지 `ASettlementContract`, `SettlementDetail`, `SettlementRecord`, `SendSettlementInfoParams` 등이 연관 되어 있기 때문에
-관련 변경사항이 생길 경우 네 함수와 해당 데이터 모두를 확인하고 수정해야하는 문제가 있었습니다.
+관련 변경사항이 생길 경우 네 함수와 해당 데이터 모두를 확인하고 수정해야 했습니다.
 
-정산 대행사마다 SettlementContract 등의 데이터가 따로 존재했습니다. 따라서 
+또한, 정산 대행사 마다 SettlementContract 등의 데이터를 따로 관리해야했습니다. 
 
 **새 구현 - 높은 응집도와 낮은 결합도**
 ```kotlin
@@ -307,29 +305,12 @@ fun settleRide(distribution: SettlementDistribution, ...) {
 
     ...
     
-    tmoneyOutboundAdapter.request(ASettlementRequests, ...)
+    AClient.send(ASettlementRequests, ...)
 }
 ```
 
-```kotlin
-fun toASettlementParams(...): List<SendSettlementInfoParams> {
-    val details = distributions
-        ...
-        .map { (target, distributions) ->
-            target to distributions.toPayDetails(...)
-        }
-        ...
-    return receiverLicenses.licenses.map { 
-        ...
-        SendSettlementInfoParams(this, details, ...)
-    }
-}
-```
-
-새 구현에서는 SettlementDistribution을
-`SettlementDivision.toDistribution()`의 **Factory 메서드**를 통해 생성하기 때문에, 깊이가 얕아지고
-기존의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 연산을
-해당 메서드에서 잘 캡슐화하고 있음을 알 수 있습니다.
+새 구현에서는 기존의 `AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 책임을
+SettlementDistribution가 가집니다. 
 
 금액을 나누는 것에 대한 수정사항은 SettlementDivisionService.getSettlementDivision()을,
 다시 합치는 것은 SettlementDivision.toDistribution()을 수정하면 되므로 응집도와 결합도에서도 개선이 되어 변경에도 대응이 용이해졌습니다.
@@ -337,9 +318,10 @@ fun toASettlementParams(...): List<SendSettlementInfoParams> {
 ## 결론
 파악하기 어려운 도메인 지식, 모델을 기준으로 구현하기 어려운 부분, 그리고 관련 호환성을 챙기는 것까지 
 정산에 도메인 주도 설계를 적용하는 데에 어려운 난관들이 많았습니다. 
-하지만, 현재까지 정합성 오류 0건일 정도로 성공적으로 프로젝트를 진행하고 있습니다.
+
+하지만, 현재까지 정합성 오류 0건일 정도로 성공적으로 프로젝트를 진행하고 있습니다. <br/>
 특히 가독성과 확장성의 큰 개선은 앞으로 정산 도메인의 유지보수에, 
-공통 모델 정의은 도메인 전문가와의 긴밀한 의사소통에 매우 도움이 될 것으로 기대하고 있습니다.
+공통 모델 정의은 도메인 전문가와의 긴밀한 의사소통에 매우 도움이 될 것으로 기대하고 있습니다. <br/>
 개인적으로도 DDD와 MDD를 단순히 글로 공부하는 것이 아닌, 실제로 시행하면서 깨닫는 것이 많아 뜻깊은 프로젝트가 되고 있습니다. 
 
 도메인 내부를 정리하는 것 다음으로는 도메인 간의 강결합을 풀고 도메인 자체를 정의하는 것을 목표로 하고 있습니다.
