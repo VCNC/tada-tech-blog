@@ -117,10 +117,10 @@ SettlementContract: SettlementEntry를 통해 "누구에게"를 기준으로 나
 하지만, SettlementEntry는 요금 항목과 `누가`를 기준으로 나눈 금액이고,
 SettlementContract에서는 `누구에게`를 기준으로 분배할 금액을 결정해줍니다. 우리가 궁극적으로 필요한 `누가 누구에게`의 책임이 **서로 다른 객체에 분리**되어 있는 셈입니다.
 
-이렇다보니, SettlementEntry와 SettlementContract가 생성된 뒤에도 두 객체가 정산 프로세스 전체에 거쳐 사용되고 있으며, `누가 누구에게`의 책임을 담당하는
+이렇다보니, SettlementEntry와 SettlementContract가 생성된 뒤에도 두 객체가 정산 프로세스 전체에 거쳐 사용되고 있으며, `누가 누구에게`의 책임까지 포함하는
 SettlementDetails라는 새로운 객체를 만들어 처리하고 있습니다.
 
-결론적으로 `누가, 누구에게`를 기준으로 금액을 나누는 책임을 가진 **단일한** 객체를 만들 필요가 있다고 생각했습니다.
+결론적으로 `누가, 누구에게`를 기준으로 금액을 나누는 책임만을 가진 **단일한** 객체를 만들 필요가 있다고 생각했습니다.
 
 <br/>
 
@@ -291,12 +291,10 @@ private fun getSettlementDetailPair(settlementContract: ASettlementContract, ...
 }
 ```
 위는 정산대행사 A의 `AService.settle() -> AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 흐름으로,
-누가 누구에게 얼마를 지금해야하는지 도출하는 과정입니다. 
-SettlementContract가 정산 메인 함수에서 SettlementDetail을 만드는 곳까지 **네 함수**에 걸쳐 인자로 넘어가는 것을 알 수 있습니다.
+누가 누구에게 얼마를 지급해야하는지 도출하는 과정입니다.
+SettlementContract가 정산 메인 함수에서 SettlementDetail을 만드는 곳까지 **네 함수**에 걸쳐 인자로 넘어가는 것을 알 수 있습니다. <br/>
 위의 코드에 나타나지 않은 데이터까지 `ASettlementContract`, `SettlementDetail`, `SettlementRecord`, `SendSettlementInfoParams` 등이 연관 되어 있기 때문에
-관련 변경사항이 생길 경우 네 함수와 해당 데이터 모두를 확인하고 수정해야 했습니다.
-
-또한, 정산 대행사 마다 SettlementContract 등의 데이터를 따로 관리해야했습니다. 
+관련 변경사항이 생길 경우 네 함수와 해당 데이터 모두를 확인하고 수정해야 했으며 객체를 생성하는 로직과 이외의 도메인 로직이 섞여있어 한번에 너무 많은 정보를 다뤄야하는 문제도 있었습니다.
 
 **새 구현 - 높은 응집도와 낮은 결합도**
 ```kotlin
@@ -309,11 +307,13 @@ fun settleRide(distribution: SettlementDistribution, ...) {
 }
 ```
 
-새 구현에서는 기존의 `AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 책임을
-SettlementDistribution가 가집니다. 
+새 구현에서는 기존의 `AService.createSettlementRecord() -> AService.getSettlementDetailPair()`의 연산들을 분리해 알맞는 객체에 배정했습니다.
+금액을 나누는 것에 대한 수정사항은 `SettlementDivisionService`를,
+다시 합치는 것은 `SettlementDivision.toDistribution()`을 수정하면 되므로 관련 로직이 엉켜있던 기존로직보다 응집도와 결합도가 개선이 되어 변경에도 대응이 용이해졌습니다.
 
-금액을 나누는 것에 대한 수정사항은 SettlementDivisionService.getSettlementDivision()을,
-다시 합치는 것은 SettlementDivision.toDistribution()을 수정하면 되므로 응집도와 결합도에서도 개선이 되어 변경에도 대응이 용이해졌습니다.
+또한, toDistribution(), toSettlementParams() 등 **factory 메서드**를 사용하여
+객체 생성을 캡슐화하였기 때문에 `객체를 생성`과 로직의 `흐름`을 명확히 구분할 수 있게 되었습니다. 따라서 필드 수정이 필요할 때와 로직 흐름의 수정이 필요할 때를
+명확히 구분하여 해당 수정사항에 집중하기 용이해졌습니다. 
 
 ## 결론
 파악하기 어려운 도메인 지식, 모델을 기준으로 구현하기 어려운 부분, 그리고 관련 호환성을 챙기는 것까지 
