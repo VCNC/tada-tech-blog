@@ -7,3 +7,4 @@ yarn-error.log
 src/gatsby-types.d.ts
 
 .DS_Store
+.idea
