@@ -3,7 +3,7 @@ layout: post
 date: 2022-10-07 10:00:00 +09:00
 permalink: /2022-10-07-ddd-settlement
 
-title: '정산 도메인 정리하기'
+title: '도메인 주도 설계와 모델 주도 설계 도입하기 - 정산편'
 thumbnail:
 - color: ./thumbnail-color.png
   gray: ./thumbnail-gray.png
