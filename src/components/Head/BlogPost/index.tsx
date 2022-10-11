@@ -12,6 +12,12 @@ export const BlogPostHead = ({ title, description, permalink }: Partial<GatsbyTy
       <meta property="og:site_name" content="타다 TECH BLOG" />
       <meta property="og:image" content={`https://static.tadatada.com/resources/blog${permalink}/thumbnail_og.png`} />
       <meta property="og:url" content={`https://blog-tech.tadatada.com${permalink}`} />
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={`https://static.tadatada.com/resources/blog${permalink}/thumbnail_og.png`} />
+      <meta name="twitter:site" content={`https://blog-tech.tadatada.com${permalink}`} />
     </Helmet>
   )
 }
