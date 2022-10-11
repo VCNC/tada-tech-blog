@@ -11,7 +11,7 @@ export const BlogPostHead = ({ title, description, permalink }: Partial<GatsbyTy
       <meta property="og:title" content={title} />
       <meta property="og:site_name" content="타다 TECH BLOG" />
       <meta property="og:image" content={`https://static.tadatada.com/resources/blog${permalink}/thumbnail_og.png`} />
-      <meta property="og:url" content="https://blog-tech.tadatada.com/" />
+      <meta property="og:url" content={`https://blog-tech.tadatada.com${permalink}`} />
     </Helmet>
   )
 }
