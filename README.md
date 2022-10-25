@@ -129,7 +129,11 @@ authors:
    - 팀원 또는 다른 개발자에게 리뷰를 요청하세요.
    - 가능하면 모든 Comment를 Resolve 해주세요.
 
-6. **실서버 배포**
+6. **og image 업로드**
+
+   - 게시물 업로드 날짜가 확정되면, [Static Server]에 permalink 와 같은 이름의 폴더를 생성하고, `thumbnail_og.png` 이미지를 업로드합니다.
+
+7. **실서버 배포**
    - PR이 `main` 브랜치로 Merge 되면 자동으로 실서버 배포가 진행됩니다.
 
 <br/>
@@ -148,3 +152,4 @@ authors:
 [#req_mkt_bx]: https://vcnc.slack.com/archives/CBBKZSXF1
 [글 작성 양식]: #게시물-작성
 [gatsby cloud]: https://www.gatsbyjs.com/products/cloud/
+[static server]: https://github.com/VCNC/static.tadatada.com/tree/master/public/resources/blog

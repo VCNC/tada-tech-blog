@@ -17,36 +17,37 @@ const md_h2 = css`
 
 const md_h3 = css`
   margin: 20px 0px 10px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+`
+
+const md_h4 = css`
+  margin: 20px 0px 10px;
   font-size: 18px;
   font-weight: 500;
   line-height: 25.2px;
 `
 
-const md_h4 = css`
-  margin: 20px 0px 10px;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 28px;
-`
-
 const md_h5 = css`
   margin: 20px 0px 10px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 28px;
+  line-height: 25.2px;
 `
 
 const md_h6 = css`
   margin: 20px 0px 10px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 28px;
+  line-height: 25.2px;
 `
 
 const md_p = css`
   font-size: 16px;
   font-weight: 400;
   line-height: 30.4px;
+  margin-bottom: 1.4em;
   word-break: keep-all;
 `
 
