@@ -1,14 +1,14 @@
 ---
 layout: post
-date: 2022-11-xx xx:00:00 +09:00 # todo 출시일로 바꾸기
-permalink: /2022-11-xx-trunk-based-development # todo 출시일로 바꾸기
+date: 2022-11-10 11:00:00 +09:00 # todo 출시일로 바꾸기
+permalink: /2022-11-10-trunk-based-development # todo 출시일로 바꾸기
 
-title: '[가제] 특명 Main Branch를 항상 배포가능한 상태로 만들어라!! (Feat TBD)'
+title: '특명 Main Branch를 항상 배포가능한 상태로 만들어라!! (Feat TBD)'
 thumbnail:
   - color: ./thumbnail-color.png # todo thumbnail 요청하기
     gray: ./thumbnail-gray.png # thumbnail 요청하기
 description: 타다 기술 블로그를 개편하는 과정을 소개합니다. 앞으로도 꾸준히 블로그를 통해 타다가 마주하는 문제를 공유할 예정입니다.올라올 글들과 타다에 많은 관심을 가져주시기 바랍니다.
-tags: ['Tada', 'Branch', 'Git', 'Preveiw', 'Feacture Flag']
+tags: ['Tada', 'Branch', 'Git', 'Preveiw', 'Feature Flag']
 
 authors:
   - name: 'Brian Ahn'
