@@ -3,7 +3,7 @@ layout: post
 date: 2024-09-01 10:00:00 +09:00
 permalink: /2024-09-01-ios-modularization
 
-title: '왜 타다 iOS 팀은 모듈화를 도입했을까?'
+title: '타다 iOS 팀은 왜 모듈화를 도입했을까?'
 thumbnail:
 - color: ./thumbnail-color.png
   gray: ./thumbnail-gray.png
