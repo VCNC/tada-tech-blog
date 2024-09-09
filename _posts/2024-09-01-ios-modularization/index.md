@@ -48,7 +48,7 @@ authors:
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_single.png" alt="new-model">
+    <img src="./module_single.png">
     </img>
   </div>
 </div>
@@ -72,7 +72,7 @@ Swift 컴파일러는 컴파일 시 **자동으로 병렬 처리를 최적화하
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_clean_build_1.png" alt="new-model">
+    <img src="./module_clean_build_1.png">
     </img>
   </div>
 </div>
@@ -84,7 +84,7 @@ Swift 컴파일러는 컴파일 시 **자동으로 병렬 처리를 최적화하
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_clean_build_2.png" alt="new-model">
+    <img src="./module_clean_build_2.png">
     </img>
   </div>
 </div>
@@ -98,7 +98,7 @@ Swift 컴파일러는 컴파일 시 **자동으로 병렬 처리를 최적화하
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_clean_build_3.png" alt="new-model">
+    <img src="./module_clean_build_3.png">
     </img>
   </div>
 </div>
@@ -110,7 +110,7 @@ Swift 컴파일러는 컴파일 시 **자동으로 병렬 처리를 최적화하
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_clean_build_4.png" alt="new-model">
+    <img src="./module_clean_build_4.png">
     </img>
   </div>
 </div>
@@ -128,7 +128,7 @@ Swift 컴파일러는 성능이 꾸준히 개선되면서 증분 빌드를 점�
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_incremental_build_1.png" alt="new-model">
+    <img src="./module_incremental_build_1.png">
     </img>
   </div>
 </div>
@@ -140,7 +140,7 @@ Swift 컴파일러는 성능이 꾸준히 개선되면서 증분 빌드를 점�
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_incremental_build_2.png" alt="new-model">
+    <img src="./module_incremental_build_2.png">
     </img>
   </div>
 </div>
@@ -152,7 +152,7 @@ Swift 컴파일러는 성능이 꾸준히 개선되면서 증분 빌드를 점�
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_incremental_build_3.png" alt="new-model">
+    <img src="./module_incremental_build_3.png">
     </img>
   </div>
 </div>
@@ -162,7 +162,7 @@ Swift 컴파일러는 성능이 꾸준히 개선되면서 증분 빌드를 점�
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_incremental_build_4.png" alt="new-model">
+    <img src="./module_incremental_build_4.png">
     </img>
   </div>
 </div>
@@ -185,7 +185,7 @@ Swift 컴파일러는 성능이 꾸준히 개선되면서 증분 빌드를 점�
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_separate_1.png" alt="new-model">
+    <img src="./module_separate_1.png">
     </img>
   </div>
 </div>
@@ -199,7 +199,7 @@ Swift 컴파일러는 성능이 꾸준히 개선되면서 증분 빌드를 점�
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_separate_2.png" alt="new-model">
+    <img src="./module_separate_2.png">
     </img>
   </div>
 </div>
@@ -213,7 +213,7 @@ Swift 컴파일러는 성능이 꾸준히 개선되면서 증분 빌드를 점�
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_share.png" alt="new-model">
+    <img src="./module_share.png">
     </img>
   </div>
 </div>
