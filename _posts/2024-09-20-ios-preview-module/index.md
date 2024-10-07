@@ -79,15 +79,6 @@ struct TadaAddView: View {
 
 따라서 저희는 이 문제점을 해결하기 위해 Feature 모듈 내에 UI 모듈을 만들었고, UI에 실질적으로 필요한 모듈을 분리함으로써 불필요한 모듈의 종속성을 제거하였습니다.
 
-<div style="justify-content: center; width: 100%;">
-  <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_feature.png">
-    </img>
-  </div>
-</div>
-
-위 그림과 같이 UI 모듈은 UI에 필수적인 CoreUI를 바라보게 되고, 그 외의 코드들로 부터 독립될 수 있습니다. 
-
 ### 타다 프로젝트 구조
 
 <div style="justify-content: center; width: 100%;">
@@ -132,18 +123,18 @@ struct TadaAddView: View {
 - TadaHomeWidget: 타다의 홈 화면에서 사용하는 Widget Extension입니다. 이 모듈은 사용자에게 집, 회사 또는 즐겨 찾는 장소로의 빠른 호출을 도와줍니다.
 - TadaRideActivityWidget: 타다의 Live Activity와 Dynamic Island를 지원하는 Widget Extension입니다. 이 모듈은 사용자가 탑승 전후의 실시간 상태를 바로 확인할 수 있게 해줍니다.
 
-### UI 모듈의 종속성
+### UI 모듈
 
-타다 프로젝트에서 UI 모듈은 아래처럼 모듈 종속성이 생기게 됩니다.
+UI 모듈은 View, ViewModel, 그리고 View에 필요한 여러 Model Extension 코드로 구성되어 있습니다. 실제로 모든 UI 작업은 이 모듈 내에서 이루어지며, SwiftUI Preview 기능 또한 해당 모듈에서 사용됩니다.
 
 <div style="justify-content: center; width: 100%;">
   <div style="width: 100%; margin: -20px 0;">
-    <img src="./module_ui.png">
+    <img src="./module_feature.png">
     </img>
   </div>
 </div>
 
-많은 코드 중에 UI에 필수적인 코드만 주입하게 되어 SwiftUI Preview 성능을 극대화 할 수 있고 이에 따라 개발 퍼포먼스가 크게 향상하였습니다.
+위 그림과 같이 UI 모듈은 UI에 필수적인 Interface 모듈과 CoreUI 모듈을 바라보게 됩니다. 이처럼 프로젝트의 많은 코드 중에서 UI에 필수적인 코드만을 주입하여 SwiftUI Preview 성능을 극대화하고, 결과적으로 개발 퍼포먼스가 크게 향상되었습니다.
 
 분리된 모듈들이 실제로 UI에 어떻게 주입되는 지 아래 예시를 통해 확인해 볼 수 있습니다.
 
