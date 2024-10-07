@@ -1,7 +1,7 @@
 ---
 layout: post
-date: 2024-09-20 10:00:00 +09:00
-permalink: /2024-09-20-ios-preview-module
+date: 2024-10-08 10:00:00 +09:00
+permalink: /2024-10-08-ios-preview-module
 
 title: '모듈화를 통한 SwiftUI Preview 효율화'
 thumbnail:
