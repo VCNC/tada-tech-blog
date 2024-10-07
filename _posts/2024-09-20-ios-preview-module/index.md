@@ -3,7 +3,7 @@ layout: post
 date: 2024-09-20 10:00:00 +09:00
 permalink: /2024-09-20-ios-preview-module
 
-title: '모듈화를 통한 SwiftUI Preview 효율화'
+title: '1부: 모듈화를 통한 SwiftUI Preview 효율화'
 thumbnail:
 - color: ./thumbnail-color.png
   gray: ./thumbnail-gray.png
@@ -336,6 +336,5 @@ Feature 모듈로의 분리가 부담스러우시거나 불필요하다고 느�
   </div>
 </div>
   
-UI 디버깅에 있어 고민이 있으신 분들에게 도움이 되기를 바랍니다. 
+UI 디버깅에 있어 고민이 있으신 분들에게 도움이 되기를 바랍니다.
 
-   
