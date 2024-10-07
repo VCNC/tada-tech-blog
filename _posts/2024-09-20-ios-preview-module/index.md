@@ -47,7 +47,7 @@ UI를 작업하는 중간중간 예상대로 구현되고 있는지 확인하는
 
 **1. 호환되지 않는 Third-Party**
 
-Xcode에서 SwiftUI Preview 기능을 사용하는 도중, gRPC-Swift와 같은 호환되지 않는 Third-Party 라이브러리를 사용하는 경우 Preview가 제대로 동작하지 않을 수 있습니다. ~다행히 최근에는 Xcode의 업데이트를 통해 해당 문제가 해결되었습니다~
+Xcode에서 SwiftUI Preview 기능을 사용하는 도중, gRPC-Swift와 같은 호환되지 않는 Third-Party 라이브러리를 사용하는 경우 Preview가 제대로 동작하지 않을 수 있습니다. ~최근에는 Xcode의 업데이트를 통해 해당 문제가 해결된 것으로 보입니다~
 
 **2. 느린 Preview 로드**
 
