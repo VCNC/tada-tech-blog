@@ -103,7 +103,7 @@ struct TadaAddView: View {
 
 - TadaFoundation: 프로젝트 전반에서 사용되는 First-Party Extension 파일들과 외부 디펜던시가 없는 다양한 유틸리티 코드들을 담고 있습니다.
 - TadaLogger: 타다 자체 커스텀된 로깅 및 Firebase와 Amplitude 등과 같은 Third-Party 라이브러리를 사용하기 위한 로깅 인터페이스를 제공합니다.
-- TadaModel: 타다 서비스에서 사용되는 데이터 모델과 이와 관련된 Extension 파일들로 구성되어 있습니다. 서버와 공유하는 protobuf 파일들을 포함합니다.
+- TadaModel: 타다 서비스에서 사용되는 데이터 모델과 이와 관련된 Extension 파일들로 구성되어 있습니다. 서버와 통신하는 DTO 파일들을 포함합니다.
 - TadaUtility: 프로젝트 전반에서 사용되는 Third-Party 관련 Extension 파일들과 외부 디펜던시가 있는 유틸리티 코드들을 담고 있습니다.
 
 #### CoreUI
