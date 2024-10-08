@@ -12,7 +12,7 @@ thumbnail:
 tags: ['iOS', '모듈화', 'Modularization', 'Tuist', 'Preview']
 
 authors:
-  - name: 'Luke Hwang'
+  - name: '황득연'
     comment: 개발 효율화에 관심이 있는 iOS 개발자입니다.
     profileImage: './profile_image_luke.jpeg'
     link: https://www.linkedin.com/in/%ED%99%A9%EB%93%9D%EC%97%B0/
