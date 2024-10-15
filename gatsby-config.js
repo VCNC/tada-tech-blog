@@ -100,6 +100,7 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-transformer-sharp',
     'gatsby-plugin-offline',
+    'gatsby-plugin-sitemap',
     'gatsby-plugin-emotion',
     {
       resolve: `gatsby-plugin-sharp`,
